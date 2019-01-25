@@ -26,14 +26,14 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      component: () => import('@/views/dashboard/index'),
+      name: 'Dashboard',
+      meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   }
 ]
