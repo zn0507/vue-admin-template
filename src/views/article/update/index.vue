@@ -1,25 +1,17 @@
 <template>
-  <div class="dashboard-container">
-
+  <div class="article-update-container">
+    update
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
-  }
+  name: 'ArticleUpdate'
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
+.article-update {
   &-container {
     margin: 30px;
   }

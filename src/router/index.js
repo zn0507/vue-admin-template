@@ -40,27 +40,59 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/example',
+    path: '/article',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/article/new',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: '文章', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/article/new/index'),
+        meta: { title: '新建文章', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree', roles: ['admin'] }
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/article/search/index'),
+        meta: { title: '搜索文章', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'update',
+        name: 'Update',
+        component: () => import('@/views/article/update/index'),
+        meta: { title: '修改文章', icon: 'tree', roles: ['admin'] }
       }
     ]
   },
-
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/category/new',
+    name: 'Category',
+    meta: { title: '类别', icon: 'example' },
+    children: [
+      {
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/category/new/index'),
+        meta: { title: '新建类别', icon: 'table' }
+      },
+      {
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/category/search/index'),
+        meta: { title: '搜索类别', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'update',
+        name: 'Update',
+        component: () => import('@/views/category/update/index'),
+        meta: { title: '修改类别', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
   {
     path: '/form',
     component: Layout,
