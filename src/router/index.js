@@ -42,21 +42,21 @@ export const asyncRouterMap = [
   {
     path: '/article',
     component: Layout,
-    redirect: '/article/new',
-    name: 'Example',
+    redirect: '/article/search',
+    name: 'Article',
     meta: { title: '文章', icon: 'example' },
     children: [
-      {
-        path: 'new',
-        name: 'New',
-        component: () => import('@/views/article/new/index'),
-        meta: { title: '新建文章', icon: 'table' }
-      },
       {
         path: 'search',
         name: 'Search',
         component: () => import('@/views/article/search/index'),
         meta: { title: '搜索文章', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/article/new/index'),
+        meta: { title: '新建文章', icon: 'table' }
       },
       {
         path: 'update',
@@ -69,16 +69,10 @@ export const asyncRouterMap = [
   {
     path: '/category',
     component: Layout,
-    redirect: '/category/new',
+    redirect: '/category/search',
     name: 'Category',
     meta: { title: '类别', icon: 'example' },
     children: [
-      {
-        path: 'new',
-        name: 'New',
-        component: () => import('@/views/category/new/index'),
-        meta: { title: '新建类别', icon: 'table' }
-      },
       {
         path: 'search',
         name: 'Search',
@@ -86,10 +80,118 @@ export const asyncRouterMap = [
         meta: { title: '搜索类别', icon: 'tree', roles: ['admin'] }
       },
       {
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/category/new/index'),
+        meta: { title: '新建类别', icon: 'table' }
+      },
+      {
         path: 'update',
         name: 'Update',
         component: () => import('@/views/category/update/index'),
         meta: { title: '修改类别', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/comment',
+    component: Layout,
+    redirect: '/comment/search',
+    name: 'Comment',
+    meta: { title: '评论', icon: 'example' },
+    children: [
+      {
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/comment/search/index'),
+        meta: { title: '搜索评论', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'update',
+        name: 'Update',
+        component: () => import('@/views/comment/update/index'),
+        meta: { title: '回复评论', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/permission',
+    component: Layout,
+    redirect: '/permission/search',
+    name: 'Permission',
+    meta: { title: '权限', icon: 'example' },
+    children: [
+      {
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/permission/search/index'),
+        meta: { title: '搜索权限', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/permission/new/index'),
+        meta: { title: '新建权限', icon: 'table' }
+      },
+      {
+        path: 'update',
+        name: 'Update',
+        component: () => import('@/views/permission/update/index'),
+        meta: { title: '修改权限', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/resume',
+    component: Layout,
+    redirect: '/resume/search',
+    name: 'Resume',
+    meta: { title: '简历', icon: 'example' },
+    children: [
+      {
+        path: 'search',
+        name: 'Search',
+        component: () => import('@/views/resume/search/index'),
+        meta: { title: '搜索简历', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'new',
+        name: 'New',
+        component: () => import('@/views/resume/new/index'),
+        meta: { title: '新建简历', icon: 'table' }
+      },
+      {
+        path: 'update',
+        name: 'Update',
+        component: () => import('@/views/resume/update/index'),
+        meta: { title: '修改简历', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'publish',
+        name: 'Publish',
+        component: () => import('@/views/resume/publish/index'),
+        meta: { title: '发布简历', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/link',
+    name: 'System',
+    meta: { title: '系统设置', icon: 'example' },
+    children: [
+      {
+        path: 'link',
+        name: 'Link',
+        component: () => import('@/views/system/link/index'),
+        meta: { title: '系统链接', icon: 'tree', roles: ['admin'] }
+      },
+      {
+        path: 'others',
+        name: 'Others',
+        component: () => import('@/views/system/others/index'),
+        meta: { title: '其他设置', icon: 'tree', roles: ['admin'] }
       }
     ]
   },
