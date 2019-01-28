@@ -5,7 +5,7 @@
       <el-select v-model="categoryFilter" placeholder="文章类别" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in category" :key="item" :label="item" :value="item"/>
       </el-select>
-      <el-date-picker v-model="dateFilter" type="date" placeholder="选择日期" style="width: 150px"/>
+      <el-date-picker v-model="dateFilter" type="date" placeholder="创建日期" style="width: 150px"/>
       <el-select v-model="statusFilter" placeholder="状态" clearable style="width: 100px" class="filter-item">
         <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
       </el-select>
@@ -17,7 +17,9 @@
       border
       fit
       highlight-current-row
-      style="width: 100%">
+      row-class-name="article-search-table-row"
+      cell-style="padding:2px;"
+      style="margin: 10px 0">
       <el-table-column label="编号" align="center" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
@@ -40,7 +42,7 @@
       </el-table-column>
       <el-table-column label="阅读数" width="80" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.readNumber }}</span>
+          <span>{{ scope.row.readings }}</span>
         </template>
       </el-table-column>
       <!--<el-table-column label="点赞数" width="100px" align="center">-->
@@ -48,11 +50,11 @@
       <!--<span>{{ scope.row.likeNumber }}</span>-->
       <!--</template>-->
       <!--</el-table-column>-->
-      <!--<el-table-column label="排名数" width="100px" align="center">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{ scope.row.rankNumber }}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column :label="$t('table.rank')" width="100px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.rank }}</span>
+        </template>
+      </el-table-column>
       <!--<el-table-column label="评论数" width="100px" align="center">-->
       <!--<template slot-scope="scope">-->
       <!--<span>{{ scope.row.commentNumber }}</span>-->
@@ -68,23 +70,64 @@
       <!--<span>{{ scope.row.type }}</span>-->
       <!--</template>-->
       <!--</el-table-column>-->
-      <el-table-column label="操作" align="center" width="250px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-waves type="primary" size="mini">编辑</el-button>
-          <el-button v-waves type="primary" size="mini">编辑</el-button>
-          <el-button v-waves type="primary" size="mini">编辑</el-button>
+          <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.code)">编辑正文</el-button>
+          <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">修改参数</el-button>
+          <el-button v-if="scope.row.status==='false'" size="mini" type="success" @click="handleModifyStatus(scope.row,'true')">{{ $t('table.publish') }}
+          </el-button>
+          <el-button v-if="scope.row.status==='true'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'false')">{{ $t('table.draft') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!--<div class="article-pagination-container">-->
-    <!--<el-pagination v-show="total>0" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" current-page="1" background layout="total, sizes, prev, pager, next, jumper"  @current-change="handleCurrentChange"/>-->
-    <!--</div>-->
+    <div class="article-pagination-container">
+      <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+    </div>
+
+    <el-dialog :title="$t('table.edit')" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
+        <el-form-item :label="$t('table.code')" prop="code" >
+          <el-input v-model="articleTemp.code" :disabled="true" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.title')" prop="title">
+          <el-input v-model="articleTemp.title" :disabled="true" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.category')">
+          <el-select v-model="articleTemp.category" class="filter-item" style="width: 300px">
+            <el-option v-for="item in category" :key="item" :label="item" :value="item"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.status')" >
+          <el-select v-model="articleTemp.status" class="filter-item" style="width: 300px">
+            <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.readings')" prop="readings">
+          <el-input-number v-model="articleTemp.readings" :min="1" controls-position="right" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.likes')" prop="likes">
+          <el-input-number v-model="articleTemp.likes" :min="1" controls-position="right" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.comments')" prop="comments">
+          <el-input-number v-model="articleTemp.comments" :min="1" controls-position="right" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.rank')" prop="rank">
+          <el-input-number v-model="articleTemp.rank" :min="1" controls-position="right" style="width: 300px"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import waves from '@/directive/waves'
+// import { parseTime } from '@/utils'
 export default {
   name: 'ArticleSearch',
   directives: {
@@ -93,55 +136,128 @@ export default {
   filters: {
     statusTypeFilter(status) {
       const statusMap = {
-        publish: 'success',
-        draft: 'info',
-        delete: 'danger'
+        true: 'success',
+        false: 'danger'
       }
       return statusMap[status]
     },
     statusFilters(status) {
       const statusMap = {
-        publish: '发布',
-        draft: '草稿',
-        delete: '删除'
+        true: '发布',
+        false: '草稿'
       }
       return statusMap[status]
     }
   },
   data() {
     return {
+      listLoading: true,
+      dialogFormVisible: false,
       category: ['java', 'nginx', 'springboot'],
       categoryFilter: '',
       dateFilter: '',
       statusFilter: '',
-      status: ['发布', '草稿', '删除'],
+      status: ['发布', '草稿'],
+      total: 3,
+      listQuery: {
+        page: 1,
+        limit: 20
+      },
       list: [
         {
           code: 'art1',
           category: 'java',
           timestamp: '2001-02-02',
-          title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'publish',
-          readNumber: 1222
+          title: 'springboot(十七)：使用Spring Boot上传文件1231312312313123',
+          status: 'true',
+          readings: 1222,
+          likes: 1233,
+          comments: 20,
+          rank: 2000
         },
         {
           code: 'art12111',
           category: 'java',
           timestamp: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'draft',
-          readNumber: 1222
+          status: 'true',
+          readings: 22,
+          likes: 1233,
+          comments: 2,
+          rank: 2351
         },
         {
           code: 'art12111',
           category: 'java',
           timestamp: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'delete',
-          readNumber: 1222
+          status: 'false',
+          readings: 222,
+          likes: 1233,
+          comments: 244,
+          rank: 1112
         }
 
-      ]
+      ],
+      articleTemp: {
+        code: '',
+        category: '',
+        timestamp: '',
+        title: '',
+        status: '',
+        readNumber: 0
+      },
+      rules: {
+        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+      }
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      this.listLoading = false
+      // fetchList(this.listQuery).then(response => {
+      //   this.list = response.data.items
+      //   this.total = response.data.total
+      //
+      //   // Just to simulate the time of the request
+      //   setTimeout(() => {
+      //     this.listLoading = false
+      //   }, 1.5 * 1000)
+      // })
+    },
+    handleModifyStatus(row, status) {
+      // this.$message({
+      //   message: '操作成功',
+      //   type: 'success'
+      // })
+      row.status = status
+    },
+    handleEditContent(code) {
+      // 转到update页面
+    },
+    handleUpdate(row) {
+      this.articleTemp = Object.assign({}, row)
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      // 更新article
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      // this.getList()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      // this.getList()
     }
   }
 }
@@ -155,6 +271,9 @@ export default {
   &-text {
     font-size: 30px;
     line-height: 46px;
+  }
+  &-table-row {
+    height: 40px;
   }
 }
 </style>

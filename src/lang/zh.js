@@ -104,17 +104,21 @@ export default {
   table: {
     title: '标题',
     type: '类型',
+    category: '类别',
     code: '编号',
     date: '时间',
     readings: '阅读数',
     status: '状态',
     actions: '操作',
-    edit: '编辑',
+    edit: '编辑文章参数',
     publish: '发布',
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    likes: '点赞数',
+    comments: '评论数',
+    rank: '评分'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

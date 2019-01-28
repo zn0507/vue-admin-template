@@ -3,9 +3,10 @@
     <el-table
       v-loading="listLoading"
       :data="list"
+      :row-style="{height:'20px'}"
       element-loading-text="Loading"
       border
-      fit
+      stripe
       highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
