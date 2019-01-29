@@ -1,9 +1,3 @@
-/*.el-scrollbar__wrap{*/
-  /*overflow-x: hidden;*/
-/*}*/
-/*.el-scrollbar__wrap {*/
-/*overflow-x: auto;*/
-/*}*/
-.is-horizontal {
-  display: none;
+.upload-picture .el-scrollbar__wrap{
+  overflow-x: hidden;
 }

@@ -45,7 +45,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0">
-            <el-col :span="24" style="height: 650px; ">
+            <el-col :span="24" style="height: 650px; " class="upload-picture">
               <el-scrollbar style="height: 100%;">
                 <el-upload
                   v-show="isShowContent"
