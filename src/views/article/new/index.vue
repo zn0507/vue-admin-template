@@ -4,7 +4,7 @@
       <el-form-item>
         <el-input v-model="form.title" placeholder="标题"/>
       </el-form-item>
-      <el-row>
+      <el-row :gutter="5">
         <el-col :span="2">
           <el-switch
             v-model="isShowContent"
