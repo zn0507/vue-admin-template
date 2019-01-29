@@ -118,7 +118,8 @@ export default {
     confirm: '确 定',
     likes: '点赞数',
     comments: '评论数',
-    rank: '评分'
+    rank: '评分',
+    upload: '上传图片'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
