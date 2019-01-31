@@ -110,7 +110,7 @@ export default {
     readings: '阅读数',
     status: '状态',
     actions: '操作',
-    edit: '编辑文章参数',
+    editArticle: '编辑文章参数',
     publish: '发布',
     draft: '草稿',
     delete: '删除',
@@ -119,7 +119,13 @@ export default {
     likes: '点赞数',
     comments: '评论数',
     rank: '评分',
-    upload: '上传图片'
+    upload: '上传图片',
+    createDate: '创建时间',
+    modifyDate: '修改时间',
+    create: '创建',
+    modify: '修改',
+    name: '名称',
+    edit: '编辑'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

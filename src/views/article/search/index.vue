@@ -1,7 +1,8 @@
 <template>
   <div class="article-search-container">
     <div class="article-filter-container">
-      <el-input placeholder="文章编号" style="width: 200px;" class="filter-item"/>
+      <el-input placeholder="文章编号" style="width: 200px" class="filter-item"/>
+      <el-input placeholder="文章标题" style="width: 400px" class="filter-item"/>
       <el-select v-model="categoryFilter" placeholder="文章类别" clearable style="width: 200px" class="filter-item">
         <el-option v-for="item in category" :key="item" :label="item" :value="item"/>
       </el-select>
@@ -74,9 +75,9 @@
         <template slot-scope="scope">
           <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.code)">编辑正文</el-button>
           <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">修改参数</el-button>
-          <el-button v-if="scope.row.status==='false'" size="mini" type="success" @click="handleModifyStatus(scope.row,'true')">{{ $t('table.publish') }}
+          <el-button v-if="scope.row.status==='draft'" size="mini" type="success" @click="handleModifyStatus(scope.row,'publish')">{{ $t('table.publish') }}
           </el-button>
-          <el-button v-if="scope.row.status==='true'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'false')">{{ $t('table.draft') }}
+          <el-button v-if="scope.row.status==='publish'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'draft')">{{ $t('table.draft') }}
           </el-button>
         </template>
       </el-table-column>
@@ -86,7 +87,7 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
 
-    <el-dialog :title="$t('table.edit')" :visible.sync="dialogFormVisible">
+    <el-dialog :title="$t('table.editArticle')" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code" >
           <el-input v-model="articleTemp.code" :disabled="true" style="width: 300px"/>
@@ -105,16 +106,16 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.readings')" prop="readings">
-          <el-input-number v-model="articleTemp.readings" :min="1" controls-position="right" style="width: 300px"/>
+          <el-input-number v-model="articleTemp.readings" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
         <el-form-item :label="$t('table.likes')" prop="likes">
-          <el-input-number v-model="articleTemp.likes" :min="1" controls-position="right" style="width: 300px"/>
+          <el-input-number v-model="articleTemp.likes" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
         <el-form-item :label="$t('table.comments')" prop="comments">
-          <el-input-number v-model="articleTemp.comments" :min="1" controls-position="right" style="width: 300px"/>
+          <el-input-number v-model="articleTemp.comments" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
         <el-form-item :label="$t('table.rank')" prop="rank">
-          <el-input-number v-model="articleTemp.rank" :min="1" controls-position="right" style="width: 300px"/>
+          <el-input-number v-model="articleTemp.rank" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -136,15 +137,15 @@ export default {
   filters: {
     statusTypeFilter(status) {
       const statusMap = {
-        true: 'success',
-        false: 'danger'
+        publish: 'success',
+        draft: 'danger'
       }
       return statusMap[status]
     },
     statusFilters(status) {
       const statusMap = {
-        true: '发布',
-        false: '草稿'
+        publish: '发布',
+        draft: '草稿'
       }
       return statusMap[status]
     }
@@ -157,7 +158,7 @@ export default {
       categoryFilter: '',
       dateFilter: '',
       statusFilter: '',
-      status: ['发布', '草稿'],
+      status: ['publish', 'draft'],
       total: 3,
       listQuery: {
         page: 1,
@@ -169,7 +170,7 @@ export default {
           category: 'java',
           timestamp: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件1231312312313123',
-          status: 'true',
+          status: 'publish',
           readings: 1222,
           likes: 1233,
           comments: 20,
@@ -180,7 +181,7 @@ export default {
           category: 'java',
           timestamp: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'true',
+          status: 'publish',
           readings: 22,
           likes: 1233,
           comments: 2,
@@ -191,7 +192,7 @@ export default {
           category: 'java',
           timestamp: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'false',
+          status: 'draft',
           readings: 222,
           likes: 1233,
           comments: 244,

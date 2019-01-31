@@ -14,7 +14,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.status" placeholder="状态">
+            <el-select v-model="form.status" placeholder="状态" clearable>
               <el-option label="发布" value="publish"/>
               <el-option label="草稿" value="draft"/>
             </el-select>
@@ -22,7 +22,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.category" placeholder="类别">
+            <el-select v-model="form.category" placeholder="类别" clearable>
               <el-option label="java" value="java"/>
               <el-option label="springboot" value="springboot"/>
               <el-option label="springboot1" value="springboot1"/>
@@ -31,7 +31,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.type" placeholder="类型">
+            <el-select v-model="form.type" placeholder="类型" clearable>
               <el-option label="原创" value="original"/>
               <el-option label="转载" value="reprinted"/>
             </el-select>
@@ -128,7 +128,8 @@ export default {
     markdown2Html() {
       import('showdown').then(showdown => {
         const converter = new showdown.Converter()
-        this.html = converter.makeHtml(this.form.content)
+        this.form.content = converter.makeHtml(this.form.content)
+        this.form.summary = converter.makeHtml(this.form.summary)
       })
     }
   }
