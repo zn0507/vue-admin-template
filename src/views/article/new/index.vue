@@ -37,6 +37,11 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col v-show="isShowLink" :span="7">
+          <el-form-item>
+            <el-input v-model="form.link" :placeholder="$t('table.link')"/>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="18">
@@ -44,22 +49,30 @@
           <markdown-editor v-show="!isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
-          <el-form-item style="margin-bottom: 0">
+          <el-form-item style="margin-bottom: 0" >
             <el-col :span="24" style="height: 650px; " class="upload-picture">
               <el-scrollbar style="height: 100%;">
                 <el-upload
                   v-show="isShowContent"
+                  :file-list="contentPictureList"
+                  :before-upload="beforeUpload"
+                  :on-preview="handlePicturePreview"
+                  :on-remove="handlePictureRemove"
                   action="https://jsonplaceholder.typicode.com/posts/"
-                  list-type="picture-card"
+                  list-type="picture"
                 >
-                  <i class="el-icon-plus"/>
+                  <el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>
                 </el-upload>
                 <el-upload
                   v-show="!isShowContent"
+                  :file-list="summaryPictureList"
+                  :on-preview="handlePicturePreview"
+                  :on-remove="handlePictureRemove"
+                  :before-upload="beforeUpload"
                   action="https://jsonplaceholder.typicode.com/posts/"
-                  list-type="picture-card"
+                  list-type="picture"
                 >
-                  <i class="el-icon-plus"/>
+                  <el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>
                 </el-upload>
               </el-scrollbar>
             </el-col>
@@ -72,21 +85,8 @@
       </el-form-item>
     </el-form>
 
-    <el-dialog :title="$t('table.upload')" :visible.sync="isShowUpload" center>
-      <el-upload
-        v-show="isShowContent"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-      >
-        <i class="el-icon-plus"/>
-      </el-upload>
-      <el-upload
-        v-show="!isShowContent"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-      >
-        <i class="el-icon-plus"/>
-      </el-upload>
+    <el-dialog :visible.sync="dialogPictureVisible">
+      <img :src="dialogPictureImageUrl" width="100%" alt="">
     </el-dialog>
   </div>
 </template>
@@ -103,6 +103,9 @@ export default {
   },
   data() {
     return {
+      isShowLink: false,
+      dialogPictureImageUrl: '',
+      dialogPictureVisible: false,
       isShowUpload: false,
       isShowContent: false,
       form: {
@@ -119,7 +122,31 @@ export default {
       html: ''
     }
   },
+  watch: {
+    form: {
+      handler(val, oldVal) {
+        console.log(val)
+        console.log(oldVal)
+      },
+      deep: true
+    },
+    'form.type'(val) {
+      this.isShowLink = val === 'reprinted'
+    }
+  },
   methods: {
+    handlePicturePreview(file) {
+      this.dialogPictureImageUrl = file.url
+      this.dialogPictureVisible = true
+    },
+    handlePictureRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    beforeUpload(file) {
+      console.log(file)
+      // const isLt2M = file.size / 1024 / 1024 < 2;
+      console.log('size:' + file.size / 1024 + 'KB')
+    },
     onSubmit() {
 
     },

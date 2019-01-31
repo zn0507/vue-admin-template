@@ -1,9 +1,20 @@
 <template>
   <div class="category-search-container">
     <div class="article-filter-container">
-      <el-input :placeholder="$t('table.code')" style="width: 200px;" class="filter-item"/>
-      <el-input :placeholder="$t('table.name')" style="width: 200px;" class="filter-item"/>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+      <el-row :gutter="20">
+        <el-col :span="3">
+          <el-input :placeholder="$t('table.code')" class="filter-item"/>
+        </el-col>
+        <el-col :span="3">
+          <el-input :placeholder="$t('table.name')" class="filter-item"/>
+        </el-col>
+        <el-col :span="2">
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+        </el-col>
+        <el-col :span="2">
+          <el-button v-waves class="filter-item" type="warning" icon="el-icon-plus" @click="handleCreate()">新建</el-button>
+        </el-col>
+      </el-row>
     </div>
 
     <el-table
@@ -81,6 +92,23 @@
         <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="$t('table.create')" :visible.sync="dialogCreateFormVisible">
+      <el-form ref="dataForm" :rules="rules" :inline="true" :model="categoryTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
+        <el-form-item :label="$t('table.name')" prop="title">
+          <el-input v-model="categoryTemp.name" style="width: 300px"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.status')">
+          <el-select v-model="categoryTemp.status" class="filter-item" style="width: 300px">
+            <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogCreateFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="createData()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -109,7 +137,12 @@ export default {
   },
   data() {
     return {
+      status: [
+        'publish',
+        'draft'
+      ],
       listLoading: true,
+      dialogCreateFormVisible: false,
       dialogFormVisible: false,
       total: 3,
       listQuery: {
@@ -161,6 +194,7 @@ export default {
       categoryTemp: {
         code: '',
         name: '',
+        status: 'publish',
         rank: 0
       },
       rules: {
@@ -194,8 +228,18 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handleCreate(row) {
+      this.categoryTemp = Object.assign({}, row)
+      this.dialogCreateFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
     updateData() {
-      // 更新article
+      // update
+    },
+    createData() {
+      // create
     },
     handleModifyStatus(row, status) {
       // this.$message({

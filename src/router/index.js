@@ -48,19 +48,19 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'search',
-        name: 'Search',
+        name: 'ArticleSearch',
         component: () => import('@/views/article/search/index'),
         meta: { title: '搜索文章', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'new',
-        name: 'New',
+        name: 'ArticleNew',
         component: () => import('@/views/article/new/index'),
         meta: { title: '新建文章', icon: 'table' }
       },
       {
         path: 'update',
-        name: 'Update',
+        name: 'ArticleUpdate',
         component: () => import('@/views/article/update/index'),
         meta: { title: '修改文章', icon: 'tree', roles: ['admin'] }
       }
@@ -75,22 +75,22 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'search',
-        name: 'Search',
+        name: 'CategorySearch',
         component: () => import('@/views/category/search/index'),
         meta: { title: '搜索类别', icon: 'tree', roles: ['admin'] }
-      },
-      {
-        path: 'new',
-        name: 'New',
-        component: () => import('@/views/category/new/index'),
-        meta: { title: '新建类别', icon: 'table' }
-      },
-      {
-        path: 'update',
-        name: 'Update',
-        component: () => import('@/views/category/update/index'),
-        meta: { title: '修改类别', icon: 'tree', roles: ['admin'] }
       }
+      // {
+      //   path: 'new',
+      //   name: 'CategoryNew',
+      //   component: () => import('@/views/category/new/index'),
+      //   meta: { title: '新建类别', icon: 'table' }
+      // },
+      // {
+      //   path: 'update',
+      //   name: 'CategoryUpdate',
+      //   component: () => import('@/views/category/update/index'),
+      //   meta: { title: '修改类别', icon: 'tree', roles: ['admin'] }
+      // }
     ]
   },
   {
@@ -102,13 +102,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'search',
-        name: 'Search',
+        name: 'CommentSearch',
         component: () => import('@/views/comment/search/index'),
         meta: { title: '搜索评论', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'update',
-        name: 'Update',
+        name: 'CommentUpdate',
         component: () => import('@/views/comment/update/index'),
         meta: { title: '回复评论', icon: 'tree', roles: ['admin'] }
       }
@@ -123,19 +123,19 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'search',
-        name: 'Search',
+        name: 'PermissionSearch',
         component: () => import('@/views/permission/search/index'),
         meta: { title: '搜索权限', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'new',
-        name: 'New',
+        name: 'PermissionNew',
         component: () => import('@/views/permission/new/index'),
         meta: { title: '新建权限', icon: 'table' }
       },
       {
         path: 'update',
-        name: 'Update',
+        name: 'PermissionUpdate',
         component: () => import('@/views/permission/update/index'),
         meta: { title: '修改权限', icon: 'tree', roles: ['admin'] }
       }
@@ -150,25 +150,25 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'search',
-        name: 'Search',
+        name: 'ResumeSearch',
         component: () => import('@/views/resume/search/index'),
         meta: { title: '搜索简历', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'new',
-        name: 'New',
+        name: 'ResumeNew',
         component: () => import('@/views/resume/new/index'),
         meta: { title: '新建简历', icon: 'table' }
       },
       {
         path: 'update',
-        name: 'Update',
+        name: 'ResumeUpdate',
         component: () => import('@/views/resume/update/index'),
         meta: { title: '修改简历', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'publish',
-        name: 'Publish',
+        name: 'ResumePublish',
         component: () => import('@/views/resume/publish/index'),
         meta: { title: '发布简历', icon: 'tree', roles: ['admin'] }
       }
@@ -183,99 +183,28 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'link',
-        name: 'Link',
+        name: 'SystemLink',
         component: () => import('@/views/system/link/index'),
         meta: { title: '系统链接', icon: 'tree', roles: ['admin'] }
       },
       {
         path: 'others',
-        name: 'Others',
+        name: 'SystemOthers',
         component: () => import('@/views/system/others/index'),
         meta: { title: '其他设置', icon: 'tree', roles: ['admin'] }
       }
     ]
   },
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]

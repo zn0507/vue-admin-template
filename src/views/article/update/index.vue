@@ -66,7 +66,7 @@
           <markdown-editor v-show="!isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
-          <el-form-item style="margin-bottom: 0">
+          <el-form-item style="margin-bottom: 0" label-width="0">
             <el-col :span="24" style="height: 650px; " class="upload-picture">
               <el-scrollbar style="height: 100%;">
                 <el-upload
@@ -104,23 +104,6 @@
 
     <el-dialog :visible.sync="dialogPictureVisible">
       <img :src="dialogPictureImageUrl" width="100%" alt="">
-    </el-dialog>
-
-    <el-dialog :title="$t('table.upload')" :visible.sync="isShowUpload" center>
-      <el-upload
-        v-show="isShowContent"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-      >
-        <i class="el-icon-plus"/>
-      </el-upload>
-      <el-upload
-        v-show="!isShowContent"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-      >
-        <i class="el-icon-plus"/>
-      </el-upload>
     </el-dialog>
   </div>
 </template>

@@ -28,14 +28,6 @@ export default {
     lineChart: '折线图',
     mixChart: '混合图表',
     example: '综合实例',
-    nested: '路由嵌套',
-    menu1: '菜单1',
-    'menu1-1': '菜单1-1',
-    'menu1-2': '菜单1-2',
-    'menu1-2-1': '菜单1-2-1',
-    'menu1-2-2': '菜单1-2-2',
-    'menu1-3': '菜单1-3',
-    menu2: '菜单2',
     Table: 'Table',
     dynamicTable: '动态Table',
     dragTable: '拖拽Table',
@@ -125,7 +117,8 @@ export default {
     create: '创建',
     modify: '修改',
     name: '名称',
-    edit: '编辑'
+    edit: '编辑',
+    link: '原文链接'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

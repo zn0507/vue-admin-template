@@ -33,7 +33,12 @@
       </el-table-column>
       <el-table-column label="创建时间" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.timestamp }}</span>
+          <span>{{ scope.row.createDate }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.modifyDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="标题" width="550px" align="center">
@@ -168,7 +173,8 @@ export default {
         {
           code: 'art1',
           category: 'java',
-          timestamp: '2001-02-02',
+          createDate: '2001-02-02',
+          modifyDate: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件1231312312313123',
           status: 'publish',
           readings: 1222,
@@ -179,7 +185,8 @@ export default {
         {
           code: 'art12111',
           category: 'java',
-          timestamp: '2001-02-02',
+          createDate: '2001-02-02',
+          modifyDate: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
           status: 'publish',
           readings: 22,
@@ -190,7 +197,8 @@ export default {
         {
           code: 'art12111',
           category: 'java',
-          timestamp: '2001-02-02',
+          createDate: '2001-02-02',
+          modifyDate: '2001-02-02',
           title: 'springboot(十七)：使用Spring Boot上传文件',
           status: 'draft',
           readings: 222,
@@ -203,7 +211,7 @@ export default {
       articleTemp: {
         code: '',
         category: '',
-        timestamp: '',
+        createDate: '',
         title: '',
         status: '',
         readNumber: 0

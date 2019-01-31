@@ -2,6 +2,9 @@
   <div class="dashboard-container">
     <div class="dashboard-text">name:{{ name }}</div>
     <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <div>
+      当日访问量，分时访问量，最大同时在线人数，累计访问量，在线平均时长，每个文章平均时长，最大时长。最小时长，原文链接被点击次数
+    </div>
   </div>
 </template>
 

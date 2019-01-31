@@ -14,6 +14,7 @@ import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import './mock' // simulation data
 
 Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
