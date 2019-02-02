@@ -1,17 +1,17 @@
 <template>
-  <div class="permission-new-container">
-    new permission
+  <div class="role-container">
+    role
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PermissionNew'
+  name: 'Role'
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.permission-new {
+.role {
   &-container {
     margin: 30px;
   }

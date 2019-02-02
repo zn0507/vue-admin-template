@@ -118,7 +118,10 @@ export default {
     modify: '修改',
     name: '名称',
     edit: '编辑',
-    link: '原文链接'
+    link: '原文链接',
+    permission: '权限',
+    createUser: '创建用户',
+    lastModifyUser: '最后修改用户'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

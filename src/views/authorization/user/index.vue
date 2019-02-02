@@ -1,17 +1,17 @@
 <template>
-  <div class="permission-search-container">
-    search permission
+  <div class="user-container">
+    user
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PermissionSearch'
+  name: 'User'
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.permission-search {
+.user {
   &-container {
     margin: 30px;
   }

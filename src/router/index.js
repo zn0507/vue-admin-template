@@ -115,29 +115,29 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/permission',
+    path: '/authorization',
     component: Layout,
-    redirect: '/permission/search',
-    name: 'Permission',
-    meta: { title: '权限', icon: 'example' },
+    redirect: '/authorization/user',
+    name: 'Authorization',
+    meta: { title: '授权', icon: 'example' },
     children: [
       {
-        path: 'search',
-        name: 'PermissionSearch',
-        component: () => import('@/views/permission/search/index'),
-        meta: { title: '搜索权限', icon: 'tree', roles: ['admin'] }
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/authorization/user/index'),
+        meta: { title: '用户管理', icon: 'tree', roles: ['admin'] }
       },
       {
-        path: 'new',
-        name: 'PermissionNew',
-        component: () => import('@/views/permission/new/index'),
-        meta: { title: '新建权限', icon: 'table' }
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/authorization/role/index'),
+        meta: { title: '角色管理', icon: 'table' }
       },
       {
-        path: 'update',
-        name: 'PermissionUpdate',
-        component: () => import('@/views/permission/update/index'),
-        meta: { title: '修改权限', icon: 'tree', roles: ['admin'] }
+        path: 'permission',
+        name: 'Permission',
+        component: () => import('@/views/authorization/permission/index'),
+        meta: { title: '权限管理', icon: 'tree', roles: ['admin'] }
       }
     ]
   },
