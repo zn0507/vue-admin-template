@@ -1,5 +1,6 @@
 import Mock from 'mockjs'
 import loginAPI from './login'
+import permissionAPI from './permission'
 // import articleAPI from './article'
 // import remoteSearchAPI from './remoteSearch'
 // import transactionAPI from './transaction'
@@ -13,6 +14,8 @@ Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername)
 Mock.mock(/\/user\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 
+Mock.mock(/\/permissionEnum/, 'get', permissionAPI.permissionEnums)
+Mock.mock(/\/permissions/, 'get', permissionAPI.permissions)
 // // 文章相关
 // Mock.mock(/\/article\/list/, 'get', articleAPI.getList)
 // Mock.mock(/\/article\/detail/, 'get', articleAPI.getArticle)

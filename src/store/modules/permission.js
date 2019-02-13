@@ -1,4 +1,5 @@
 import { asyncRouterMap, constantRouterMap } from '@/router'
+import { getAllPermissionEnums, getAllPermissions } from '@/api/auth'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -37,12 +38,20 @@ function filterAsyncRouter(routes, roles) {
 const permission = {
   state: {
     routers: constantRouterMap,
-    addRouters: []
+    addRouters: [],
+    permissionEnums: [],
+    permissions: []
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
+    },
+    SET_ENUMS: (state, enums) => {
+      state.permissionEnums = enums
+    },
+    SET_PERMISSIONS: (state, permissions) => {
+      state.permissions = permissions
     }
   },
   actions: {
@@ -58,6 +67,26 @@ const permission = {
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
+    },
+    getPermissionEnums({ commit }) {
+      getAllPermissionEnums()
+        .then(response => {
+          const data = response.data
+          commit('SET_ENUMS', data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getPermissions({ commit }) {
+      getAllPermissions()
+        .then(response => {
+          const data = response.data
+          commit('SET_PERMISSIONS', data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }

@@ -30,17 +30,17 @@
       row-class-name="article-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
-      <el-table-column :label="$t('table.code')" align="center" width="100">
+      <el-table-column :label="$t('table.code')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.name')" width="150px" align="center">
+      <el-table-column :label="$t('table.name')" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.permission')" width="100" align="center">
+      <el-table-column :label="$t('table.permission')" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.permission }}</span>
         </template>
@@ -52,7 +52,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.modifyDate }}</span>
+          <span>{{ scope.row.modificationDate }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.createUser')" width="100" align="center">
@@ -137,9 +137,7 @@ export default {
   },
   data() {
     return {
-      permission: [
-        'All', 'Resume', 'Article', 'Category'
-      ],
+      permission: this.$store.state.permission.permissionEnums,
       isShowCreate: false,
       isShow: false,
       statusFilter: '',
@@ -149,38 +147,7 @@ export default {
         page: 1,
         limit: 20
       },
-      list: [
-        {
-          code: '123',
-          name: '123',
-          status: 'draft',
-          permission: 'All',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        },
-        {
-          code: '12312322',
-          name: '12312321',
-          status: 'publish',
-          permission: 'Article',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        },
-        {
-          code: '123',
-          name: '123',
-          status: 'publish',
-          permission: 'Resume',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        }
-      ],
+      list: this.$store.state.permission.permissions,
       permissionTemp: {
         code: '',
         name: '',
@@ -193,6 +160,10 @@ export default {
         // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       }
     }
+  },
+  beforeMount() {
+    this.$store.dispatch('getPermissionEnums')
+    this.$store.dispatch('getPermissions')
   },
   methods: {
     handleCreate() {

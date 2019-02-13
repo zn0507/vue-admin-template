@@ -1,10 +1,16 @@
 import request from '@/utils/request'
 
-export function getAllPermissions(query) {
+export function getAllPermissionEnums() {
   return request({
-    url: '/Permissions/list',
-    method: 'get',
-    params: query
+    url: '/permissionEnum',
+    method: 'get'
+  })
+}
+
+export function getAllPermissions() {
+  return request({
+    url: '/permissions',
+    method: 'get'
   })
 }
 
