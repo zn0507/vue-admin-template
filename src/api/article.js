@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function getAllArticles(query) {
   return request({
     url: '/article/list',
     method: 'get',
@@ -8,23 +8,15 @@ export function fetchList(query) {
   })
 }
 
-export function fetchArticle(id) {
+export function getArticleById(id) {
   return request({
-    url: '/article/detail',
+    url: '/article/list',
     method: 'get',
     params: { id }
   })
 }
 
-export function fetchPv(pv) {
-  return request({
-    url: '/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createArticle(data) {
+export function updateArticle(data) {
   return request({
     url: '/article/create',
     method: 'post',
@@ -32,9 +24,25 @@ export function createArticle(data) {
   })
 }
 
-export function updateArticle(data) {
+export function getAllCategories(query) {
   return request({
-    url: '/article/update',
+    url: '/category/list',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getCategoryById(id) {
+  return request({
+    url: '/category/list',
+    method: 'get',
+    params: { id }
+  })
+}
+
+export function updateCategory(data) {
+  return request({
+    url: '/category/create',
     method: 'post',
     data
   })
