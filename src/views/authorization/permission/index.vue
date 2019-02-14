@@ -14,7 +14,7 @@
           </el-select>
         </el-col>
         <el-col :span="2">
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
         </el-col>
         <el-col :span="2">
           <el-button v-waves class="filter-item" type="warning" icon="el-icon-plus" @click="handleCreate()">新建</el-button>
@@ -23,7 +23,8 @@
     </div>
 
     <el-table
-      :data="list"
+      v-loading="listLoading"
+      :data="permissionList"
       border
       fit
       highlight-current-row
@@ -114,6 +115,7 @@
 
 <script>
 import waves from '@/directive/waves'
+import { getAllPermissionEnums, getAllPermissions } from '@/api/auth'
 export default {
   name: 'Permission',
   directives: {
@@ -137,17 +139,21 @@ export default {
   },
   data() {
     return {
-      permission: this.$store.state.permission.permissionEnums,
+      permission: [],
       isShowCreate: false,
       isShow: false,
       statusFilter: '',
       status: ['publish', 'draft'],
       total: 3,
+      listLoading: false,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        code: '',
+        name: '',
+        status: ''
       },
-      list: this.$store.state.permission.permissions,
+      permissionList: [],
       permissionTemp: {
         code: '',
         name: '',
@@ -162,10 +168,27 @@ export default {
     }
   },
   beforeMount() {
-    this.$store.dispatch('getPermissionEnums')
-    this.$store.dispatch('getPermissions')
+    this.getPermissionEnums()
   },
   methods: {
+    getPermissions(query) {
+      this.listLoading = true
+      getAllPermissions(query)
+        .then(response => {
+          this.permissionList = response.data
+          // Just to simulate the time of the request
+          // setTimeout(() => {
+          //   this.listLoading = false
+          // }, 1000)
+          this.listLoading = false
+        })
+    },
+    getPermissionEnums() {
+      getAllPermissionEnums()
+        .then(response => {
+          this.permission = response.data
+        })
+    },
     handleCreate() {
     },
     handleUpdate(row) {
@@ -183,6 +206,17 @@ export default {
       row.status = status
     },
     updateData() {
+    },
+    handleSearch() {
+      this.getPermissions(this.listQuery)
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getPermissions()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getPermissions()
     }
   }
 }

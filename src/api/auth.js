@@ -7,10 +7,11 @@ export function getAllPermissionEnums() {
   })
 }
 
-export function getAllPermissions() {
+export function getAllPermissions(query) {
   return request({
     url: '/permissions',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 
