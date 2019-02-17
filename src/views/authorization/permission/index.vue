@@ -147,11 +147,12 @@ export default {
       total: 3,
       listLoading: false,
       listQuery: {
-        page: 1,
+        page: 0,
         limit: 20,
-        code: '',
-        name: '',
-        status: ''
+        code: 'Article',
+        name: 'Article',
+        status: 'publish',
+        id: '4028860f68e74d'
       },
       permissionList: [],
       permissionTemp: {

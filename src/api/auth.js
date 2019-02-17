@@ -9,7 +9,7 @@ export function getAllPermissionEnums() {
 
 export function getAllPermissions(query) {
   return request({
-    url: '/permissions',
+    url: '/permission',
     method: 'get',
     params: query
   })
