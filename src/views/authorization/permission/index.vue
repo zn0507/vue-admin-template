@@ -3,13 +3,13 @@
     <div class="permission-filter-container">
       <el-row :gutter="20">
         <el-col :span="3">
-          <el-input :placeholder="$t('table.code')" class="filter-item"/>
+          <el-input :placeholder="$t('table.code')" v-model="listQuery.code" class="filter-item"/>
         </el-col>
         <el-col :span="3">
-          <el-input :placeholder="$t('table.name')" class="filter-item"/>
+          <el-input :placeholder="$t('table.name')" v-model="listQuery.name" class="filter-item"/>
         </el-col>
         <el-col :span="3">
-          <el-select v-model="statusFilter" :placeholder="$t('table.status')" clearable class="filter-item">
+          <el-select v-model="listQuery.status" :placeholder="$t('table.status')" clearable class="filter-item">
             <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-col>
