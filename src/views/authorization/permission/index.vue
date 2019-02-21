@@ -144,15 +144,15 @@ export default {
       isShow: false,
       statusFilter: '',
       status: ['publish', 'draft'],
-      total: 3,
+      total: 0,
       listLoading: false,
       listQuery: {
-        page: 0,
-        limit: 20,
-        code: 'Article',
-        name: 'Article',
-        status: 'publish',
-        id: '4028860f68e74d'
+        page: 1,
+        limit: 10,
+        code: '',
+        name: '',
+        status: '',
+        id: ''
       },
       permissionList: [],
       permissionTemp: {
@@ -175,12 +175,14 @@ export default {
     getPermissions(query) {
       this.listLoading = true
       getAllPermissions(query)
-        .then(response => {
-          this.permissionList = response.data
+        .then(res => {
+          console.log(res)
+          this.permissionList = res.data.content
           // Just to simulate the time of the request
           // setTimeout(() => {
           //   this.listLoading = false
           // }, 1000)
+          this.total = res.data.total
           this.listLoading = false
         })
     },
@@ -213,11 +215,11 @@ export default {
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
-      this.getPermissions()
+      this.getPermissions(this.listQuery)
     },
     handleCurrentChange(val) {
       this.listQuery.page = val
-      this.getPermissions()
+      this.getPermissions(this.listQuery)
     }
   }
 }
