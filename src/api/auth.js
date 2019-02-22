@@ -15,19 +15,19 @@ export function getAllPermissions(query) {
   })
 }
 
+export function updatePermission(data) {
+  return request({
+    url: '/permission',
+    method: 'post',
+    data
+  })
+}
+
 export function getPermissionById(id) {
   return request({
     url: '/Permissions/list',
     method: 'get',
     params: { id }
-  })
-}
-
-export function updatePermission(data) {
-  return request({
-    url: '/Permissions/create',
-    method: 'post',
-    data
   })
 }
 

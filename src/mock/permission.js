@@ -1,34 +1,6 @@
 
 const permissionEnums = [
-  'All',
-  'Dashboard',
-  'Article',
-  'ArticleSearch',
-  'ArticleNew',
-  'ArticleUpdate',
-  'Category',
-  'CategoryNew',
-  'CategorySearch',
-  'CategoryUpdate',
-  'Comment',
-  'CommentSearch',
-  'CommentUpdate',
-  'Resume',
-  'ResumeNew',
-  'ResumeSearch',
-  'ResumeUpdate',
-  'ResumePublish',
-  'System',
-  'SystemLink',
-  'SystemOthers',
-  'User',
-  'UserNew',
-  'UserSearch',
-  'UserUpdate',
-  'Role',
-  'RoleNew',
-  'RoleSearch',
-  'RoleUpdate'
+  'All'
 ]
 
 const permissions = [

@@ -14,7 +14,7 @@ Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername)
 Mock.mock(/\/user\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 
-Mock.mock(/\/permissionEnum/, 'get', permissionAPI.permissionEnums)
+// Mock.mock(/\/permissionEnum/, 'get', permissionAPI.permissionEnums)
 // Mock.mock(/\/permissions/, 'get', permissionAPI.permissions)
 // // 文章相关
 // Mock.mock(/\/article\/list/, 'get', articleAPI.getList)

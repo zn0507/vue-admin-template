@@ -82,7 +82,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="category-pagination-container">
+    <div class="permission-pagination-container">
       <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
 
@@ -115,7 +115,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getAllPermissionEnums, getAllPermissions } from '@/api/auth'
+import { getAllPermissionEnums, getAllPermissions, updatePermission } from '@/api/auth'
 export default {
   name: 'Permission',
   directives: {
@@ -186,6 +186,18 @@ export default {
           this.listLoading = false
         })
     },
+    savePermission(data) {
+      updatePermission(data)
+        .then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
+    },
     getPermissionEnums() {
       getAllPermissionEnums()
         .then(response => {
@@ -202,15 +214,15 @@ export default {
       })
     },
     handleModifyStatus(row, status) {
-      // this.$message({
-      //   message: '操作成功',
-      //   type: 'success'
-      // })
       row.status = status
+      this.savePermission(row)
     },
     updateData() {
+      this.savePermission(this.permissionTemp)
+      this.isShow = false
     },
     handleSearch() {
+      this.listQuery.page = 1
       this.getPermissions(this.listQuery)
     },
     handleSizeChange(val) {
