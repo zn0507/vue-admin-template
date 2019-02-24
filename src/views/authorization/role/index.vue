@@ -14,7 +14,7 @@
           </el-select>
         </el-col>
         <el-col :span="2">
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
         </el-col>
         <el-col :span="2">
           <el-button v-waves class="filter-item" type="warning" icon="el-icon-plus" @click="handleCreate()">新建</el-button>
@@ -23,7 +23,8 @@
     </div>
 
     <el-table
-      :data="list"
+      v-loading="listLoading"
+      :data="roleList"
       border
       fit
       highlight-current-row
@@ -42,7 +43,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.permission')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.permission }}</span>
+          <el-tag>{{ scope.row.permissions.length }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.createDate')" width="100" align="center">
@@ -52,7 +53,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.modifyDate }}</span>
+          <span>{{ scope.row.modificationDate }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.createUser')" width="100" align="center">
@@ -86,20 +87,20 @@
     </div>
 
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
-      <el-form ref="dataForm" :rules="rules" :inline="true" :model="permissionTemp" label-position="center" label-width="70px" style="width: 600px">
+      <el-form ref="dataForm" :rules="rules" :inline="true" :model="roleTemp" label-position="center" label-width="70px" style="width: 600px">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="permissionTemp.code" :disabled="true" />
+          <el-input v-model="roleTemp.code" :disabled="true" />
         </el-form-item>
         <el-form-item :label="$t('table.name')" prop="name">
-          <el-input v-model="permissionTemp.name" />
+          <el-input v-model="roleTemp.name" />
         </el-form-item>
         <el-form-item :label="$t('table.status')">
-          <el-select v-model="permissionTemp.status" class="filter-item" style="width: 185px" clearable>
+          <el-select v-model="roleTemp.status" class="filter-item" style="width: 185px" clearable>
             <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.permission')" prop="permission">
-          <el-select v-model="permissionTemp.permission" class="filter-item" style="width: 185px" clearable>
+          <el-select v-model="roleTemp.permission" class="filter-item" style="width: 185px" clearable>
             <el-option v-for="item in permission" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
@@ -114,6 +115,7 @@
 
 <script>
 import waves from '@/directive/waves'
+import { getAllRoles } from '@/api/auth'
 export default {
   name: 'Role',
   directives: {
@@ -137,55 +139,32 @@ export default {
   },
   data() {
     return {
-      permission: [
-        'All', 'Resume', 'Article', 'Category'
-      ],
+      permission: [],
       isShowCreate: false,
       isShow: false,
+      isNew: false,
       statusFilter: '',
       status: ['publish', 'draft'],
-      total: 3,
+      total: 0,
+      listLoading: false,
       listQuery: {
         page: 1,
-        limit: 20
-      },
-      list: [
-        {
-          code: '123',
-          name: '123',
-          status: 'draft',
-          permission: 'All',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        },
-        {
-          code: '12312322',
-          name: '12312321',
-          status: 'publish',
-          permission: 'Article',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        },
-        {
-          code: '123',
-          name: '123',
-          status: 'publish',
-          permission: 'Resume',
-          createDate: '2019-01-14',
-          modifyDate: '2019-01-14',
-          createUser: 'system',
-          lastModifyUser: 'system'
-        }
-      ],
-      permissionTemp: {
+        limit: 10,
         code: '',
         name: '',
         status: '',
-        permission: ''
+        id: ''
+      },
+      roleList: [],
+      roleTemp: {
+        code: '',
+        name: '',
+        status: '',
+        permission: [],
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: ''
       },
       rules: {
         // type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -195,10 +174,27 @@ export default {
     }
   },
   methods: {
+    getRoles(query) {
+      this.listLoading = true
+      getAllRoles(query)
+        .then(res => {
+          this.roleList = res.data.content
+          // Just to simulate the time of the request
+          // setTimeout(() => {
+          //   this.listLoading = false
+          // }, 1000)
+          this.total = res.data.total
+          this.listLoading = false
+        })
+    },
+    handleSearch() {
+      this.listQuery.page = 1
+      this.getRoles(this.listQuery)
+    },
     handleCreate() {
     },
     handleUpdate(row) {
-      this.permissionTemp = Object.assign({}, row)
+      this.roleTemp = Object.assign({}, row)
       this.isShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()

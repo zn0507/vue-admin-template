@@ -89,7 +89,7 @@
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="permissionTemp" label-position="center" label-width="70px" style="width: 600px">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="permissionTemp.code" :disabled="true" />
+          <el-input v-model="permissionTemp.code" :disabled="isNew !== true" />
         </el-form-item>
         <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="permissionTemp.name" />
@@ -141,6 +141,7 @@ export default {
     return {
       permission: [],
       isShowCreate: false,
+      isNew: false,
       isShow: false,
       statusFilter: '',
       status: ['publish', 'draft'],
@@ -159,7 +160,11 @@ export default {
         code: '',
         name: '',
         status: '',
-        permission: ''
+        permission: '',
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: ''
       },
       rules: {
         // type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -205,8 +210,16 @@ export default {
         })
     },
     handleCreate() {
+      this.resetTemp()
+      this.isNew = true
+      this.isShow = true
+      this.permissionTemp.createDate = new Date()
+      this.permissionTemp.modificationDate = new Date()
+      // this.permissionTemp.createUser
+      // this.permissionTemp.lastModifyUser
     },
     handleUpdate(row) {
+      this.isNew = false
       this.permissionTemp = Object.assign({}, row)
       this.isShow = true
       this.$nextTick(() => {
@@ -215,6 +228,8 @@ export default {
     },
     handleModifyStatus(row, status) {
       row.status = status
+      // row.modificationDate = new Date()
+      // row.lastModifyUser
       this.savePermission(row)
     },
     updateData() {
@@ -232,6 +247,14 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getPermissions(this.listQuery)
+    },
+    resetTemp() {
+      this.permissionTemp = {
+        code: '',
+        name: '',
+        status: '',
+        permission: ''
+      }
     }
   }
 }

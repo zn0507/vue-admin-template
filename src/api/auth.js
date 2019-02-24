@@ -33,7 +33,7 @@ export function getPermissionById(id) {
 
 export function getAllRoles(query) {
   return request({
-    url: '/role/list',
+    url: '/role',
     method: 'get',
     params: query
   })
@@ -49,7 +49,7 @@ export function getRoleById(id) {
 
 export function updateRole(data) {
   return request({
-    url: '/Role/create',
+    url: '/role',
     method: 'post',
     data
   })
