@@ -99,9 +99,9 @@
             <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.permission')" prop="permission">
-          <el-select v-model="roleTemp.permission" class="filter-item" style="width: 185px" clearable>
-            <el-option v-for="item in permission" :key="item" :label="item" :value="item"/>
+        <el-form-item :label="$t('table.permission')" prop="permissions">
+          <el-select v-model="roleTemp.permissions" class="filter-item" style="width: 440px" clearable multiple>
+            <el-option v-for="item in permissions" :key="item.id" :label="item.code" :value="item.code"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -115,7 +115,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getAllRoles } from '@/api/auth'
+import { getAllRoles, getAllPermissions } from '@/api/auth'
 export default {
   name: 'Role',
   directives: {
@@ -139,7 +139,7 @@ export default {
   },
   data() {
     return {
-      permission: [],
+      permissions: [],
       isShowCreate: false,
       isShow: false,
       isNew: false,
@@ -155,12 +155,20 @@ export default {
         status: '',
         id: ''
       },
+      pQuery: {
+        page: 0,
+        limit: 0,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: ''
+      },
       roleList: [],
       roleTemp: {
         code: '',
         name: '',
         status: '',
-        permission: [],
+        permissions: [],
         createUser: '',
         lastModifyUser: '',
         createDate: '',
@@ -172,6 +180,12 @@ export default {
         // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       }
     }
+  },
+  beforeMount() {
+    getAllPermissions(this.pQuery)
+      .then(res => {
+        this.permissions = res.data.content
+      })
   },
   methods: {
     getRoles(query) {
