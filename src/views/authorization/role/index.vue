@@ -3,13 +3,13 @@
     <div class="permission-filter-container">
       <el-row :gutter="20">
         <el-col :span="3">
-          <el-input :placeholder="$t('table.code')" class="filter-item"/>
+          <el-input :placeholder="$t('table.code')" v-model="listQuery.code" class="filter-item"/>
         </el-col>
         <el-col :span="3">
-          <el-input :placeholder="$t('table.name')" class="filter-item"/>
+          <el-input :placeholder="$t('table.name')" v-model="listQuery.name" class="filter-item"/>
         </el-col>
         <el-col :span="3">
-          <el-select v-model="statusFilter" :placeholder="$t('table.status')" clearable class="filter-item">
+          <el-select v-model="listQuery.status" :placeholder="$t('table.status')" clearable class="filter-item">
             <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-col>
@@ -83,7 +83,16 @@
     </el-table>
 
     <div class="category-pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination
+        v-show="total>0"
+        :current-page="listQuery.page"
+        :page-sizes="[10,20,30, 50]"
+        :page-size="listQuery.limit"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
     </div>
 
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
@@ -115,7 +124,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getAllRoles, getAllPermissions } from '@/api/auth'
+import { getAllRoles, getAllPermissions, updateRole } from '@/api/auth'
 export default {
   name: 'Role',
   directives: {
@@ -201,6 +210,17 @@ export default {
           this.listLoading = false
         })
     },
+    saveRole(data) {
+      updateRole(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
+    },
     handleSearch() {
       this.listQuery.page = 1
       this.getRoles(this.listQuery)
@@ -226,10 +246,33 @@ export default {
       row.status = status
     },
     updateData() {
+      const role = Object.assign({}, this.roleTemp)
+      role.permissions = []
+      this.roleTemp.permissions.forEach(permission => {
+        role.permissions.push({ 'id': permission })
+      })
+      this.saveRole(role)
+      this.isShow = false
     },
-    handleSizeChange() {
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getRoles(this.listQuery)
     },
-    handleCurrentChange() {
+    handleCurrentChange(val) {
+      this.listQuery.limit = val
+      this.getRoles(this.listQuery)
+    },
+    resetTemp() {
+      this.roleTemp = {
+        code: '',
+        name: '',
+        status: '',
+        permissions: [],
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: ''
+      }
     }
   }
 }
