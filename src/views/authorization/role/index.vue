@@ -100,8 +100,8 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.permission')" prop="permissions">
-          <el-select v-model="roleTemp.permissions" class="filter-item" style="width: 440px" clearable multiple>
-            <el-option v-for="item in permissions" :key="item.id" :label="item.code" :value="item.code"/>
+          <el-select v-model="roleTemp.permissions" value-key="id" class="filter-item" style="width: 440px" clearable multiple filterable>
+            <el-option v-for="item in permissions" :key="item.id" :label="item.code" :value="item.id"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -209,6 +209,10 @@ export default {
     },
     handleUpdate(row) {
       this.roleTemp = Object.assign({}, row)
+      this.roleTemp.permissions = []
+      row.permissions.forEach(permission => {
+        this.roleTemp.permissions.push(permission.id)
+      })
       this.isShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -222,6 +226,10 @@ export default {
       row.status = status
     },
     updateData() {
+    },
+    handleSizeChange() {
+    },
+    handleCurrentChange() {
     }
   }
 }
