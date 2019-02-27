@@ -98,7 +98,7 @@
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="roleTemp" label-position="center" label-width="70px" style="width: 600px">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="roleTemp.code" :disabled="true" />
+          <el-input v-model="roleTemp.code" :disabled="isNew !== true"/>
         </el-form-item>
         <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="roleTemp.name" />
@@ -226,6 +226,13 @@ export default {
       this.getRoles(this.listQuery)
     },
     handleCreate() {
+      this.resetTemp()
+      this.isNew = true
+      this.isShow = true
+      this.roleTemp.createDate = new Date()
+      this.roleTemp.modificationDate = new Date()
+      // this.permissionTemp.createUser
+      // this.permissionTemp.lastModifyUser
     },
     handleUpdate(row) {
       this.roleTemp = Object.assign({}, row)
@@ -239,11 +246,10 @@ export default {
       })
     },
     handleModifyStatus(row, status) {
-      // this.$message({
-      //   message: '操作成功',
-      //   type: 'success'
-      // })
       row.status = status
+      // row.modificationDate = new Date()
+      // row.lastModifyUser
+      this.saveRole(row)
     },
     updateData() {
       const role = Object.assign({}, this.roleTemp)
@@ -259,7 +265,7 @@ export default {
       this.getRoles(this.listQuery)
     },
     handleCurrentChange(val) {
-      this.listQuery.limit = val
+      this.listQuery.page = val
       this.getRoles(this.listQuery)
     },
     resetTemp() {
