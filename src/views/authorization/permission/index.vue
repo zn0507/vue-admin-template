@@ -28,7 +28,7 @@
       border
       fit
       highlight-current-row
-      row-class-name="article-search-table-row"
+      row-class-name="permission-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
       <el-table-column :label="$t('table.code')" align="center" width="150">

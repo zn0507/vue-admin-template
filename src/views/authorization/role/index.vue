@@ -1,6 +1,6 @@
 <template>
   <div class="role-container">
-    <div class="permission-filter-container">
+    <div class="role-filter-container">
       <el-row :gutter="20">
         <el-col :span="3">
           <el-input :placeholder="$t('table.code')" v-model="listQuery.code" class="filter-item"/>
@@ -28,7 +28,7 @@
       border
       fit
       highlight-current-row
-      row-class-name="article-search-table-row"
+      row-class-name="role-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
       <el-table-column :label="$t('table.code')" align="center" width="100">
@@ -235,6 +235,7 @@ export default {
       // this.permissionTemp.lastModifyUser
     },
     handleUpdate(row) {
+      this.isNew = false
       this.roleTemp = Object.assign({}, row)
       this.roleTemp.permissions = []
       row.permissions.forEach(permission => {

@@ -57,7 +57,7 @@ export function updateRole(data) {
 
 export function getAllUsers(query) {
   return request({
-    url: '/user/list',
+    url: '/user',
     method: 'get',
     params: query
   })
@@ -73,7 +73,7 @@ export function getUserById(id) {
 
 export function updateUser(data) {
   return request({
-    url: '/user/create',
+    url: '/user',
     method: 'post',
     data
   })

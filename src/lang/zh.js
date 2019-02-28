@@ -121,7 +121,9 @@ export default {
     link: '原文链接',
     permission: '权限',
     createUser: '创建用户',
-    lastModifyUser: '最后修改用户'
+    lastModifyUser: '最后修改用户',
+    role: '角色',
+    password: '密码'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
