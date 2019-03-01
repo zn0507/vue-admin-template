@@ -24,9 +24,9 @@ export function updateArticle(data) {
   })
 }
 
-export function getAllCategories(query) {
+export function getAllCategory(query) {
   return request({
-    url: '/category/list',
+    url: '/articleCategory',
     method: 'get',
     params: query
   })
@@ -42,7 +42,7 @@ export function getCategoryById(id) {
 
 export function updateCategory(data) {
   return request({
-    url: '/category/create',
+    url: '/articleCategory',
     method: 'post',
     data
   })

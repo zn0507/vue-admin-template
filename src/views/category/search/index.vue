@@ -1,12 +1,17 @@
 <template>
   <div class="category-search-container">
-    <div class="article-filter-container">
+    <div class="category-filter-container">
       <el-row :gutter="20">
         <el-col :span="3">
-          <el-input :placeholder="$t('table.code')" class="filter-item"/>
+          <el-input :placeholder="$t('table.code')" v-model="listQuery.code" class="filter-item"/>
         </el-col>
         <el-col :span="3">
-          <el-input :placeholder="$t('table.name')" class="filter-item"/>
+          <el-input :placeholder="$t('table.name')" v-model="listQuery.name" class="filter-item"/>
+        </el-col>
+        <el-col :span="3">
+          <el-select v-model="listQuery.status" :placeholder="$t('table.status')" clearable class="filter-item">
+            <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
+          </el-select>
         </el-col>
         <el-col :span="2">
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
@@ -18,6 +23,7 @@
     </div>
 
     <el-table
+      v-loading="listLoading"
       :data="list"
       border
       fit
@@ -50,6 +56,16 @@
           <span>{{ scope.row.modifyDate }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('table.createUser')" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createUser }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.lastModifyUser')" width="120" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.lastModifyUser }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" width="100px" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusTypeFilter">{{ scope.row.status | statusFilters }}</el-tag>
@@ -71,20 +87,20 @@
     </div>
 
     <el-dialog :title="$t('table.edit')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :inline="true" :model="categoryTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleCategoryTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="categoryTemp.code" :disabled="true" />
+          <el-input v-model="articleCategoryTemp.code" :disabled="true" />
         </el-form-item>
         <el-form-item :label="$t('table.name')" prop="title">
-          <el-input v-model="categoryTemp.name" />
+          <el-input v-model="articleCategoryTemp.name" />
         </el-form-item>
         <el-form-item :label="$t('table.status')">
-          <el-select v-model="categoryTemp.status" class="filter-item">
+          <el-select v-model="articleCategoryTemp.status" class="filter-item">
             <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.rank')" prop="rank">
-          <el-input-number v-model="categoryTemp.rank" :min="0" controls-position="right" />
+          <el-input-number v-model="articleCategoryTemp.rank" :min="0" controls-position="right" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,30 +108,14 @@
         <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-
-    <el-dialog :title="$t('table.create')" :visible.sync="dialogCreateFormVisible">
-      <el-form ref="dataForm" :rules="rules" :inline="true" :model="categoryTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
-        <el-form-item :label="$t('table.name')" prop="title">
-          <el-input v-model="categoryTemp.name" />
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="categoryTemp.status" class="filter-item" >
-            <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogCreateFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="createData()">{{ $t('table.confirm') }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import waves from '@/directive/waves'
+import { getAllCategory, updateCategory } from '@/api/article'
 export default {
-  name: 'CategorySearch',
+  name: 'ArticleCategory',
   directives: {
     waves
   },
@@ -137,65 +137,31 @@ export default {
   },
   data() {
     return {
-      status: [
-        'publish',
-        'draft'
-      ],
-      listLoading: true,
-      dialogCreateFormVisible: false,
-      dialogFormVisible: false,
-      total: 3,
+      isShowCreate: false,
+      isNew: false,
+      isShow: false,
+      statusFilter: '',
+      status: ['publish', 'draft'],
+      total: 0,
+      listLoading: false,
       listQuery: {
         page: 1,
-        limit: 20
-      },
-      list: [
-        {
-          code: 'cate1',
-          name: 'springboot',
-          rank: 22,
-          status: 'publish',
-          modifyDate: '2018-11-1',
-          createDate: '2018-1-1'
-        },
-        {
-          code: 'cate2',
-          name: 'springboot',
-          rank: 222,
-          status: 'publish',
-          modifyDate: '2018-11-1',
-          createDate: '2018-1-1'
-        },
-        {
-          code: 'cate3',
-          name: 'springboot',
-          rank: 123,
-          status: 'draft',
-          modifyDate: '2018-11-1',
-          createDate: '2018-1-1'
-        },
-        {
-          code: 'cate4',
-          name: 'springboot',
-          rank: 2244,
-          status: 'publish',
-          modifyDate: '2018-11-1',
-          createDate: '2018-1-1'
-        },
-        {
-          code: 'cate12111',
-          name: 'springboot',
-          rank: 432,
-          status: 'draft',
-          modifyDate: '2018-11-1',
-          createDate: '2018-1-1'
-        }
-      ],
-      categoryTemp: {
+        limit: 10,
         code: '',
         name: '',
-        status: 'publish',
-        rank: 0
+        status: '',
+        id: ''
+      },
+      articleCategoryList: [],
+      articleCategoryTemp: {
+        code: '',
+        name: '',
+        status: '',
+        rank: 0,
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: ''
       },
       rules: {
         // type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -204,57 +170,81 @@ export default {
       }
     }
   },
-  created() {
-    this.getList()
-  },
   methods: {
-    getList() {
+    getCategory(query) {
       this.listLoading = true
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      getAllCategory(query)
+        .then(res => {
+          this.articleCategoryList = res.data.content
+          // Just to simulate the time of the request
+          // setTimeout(() => {
+          //   this.listLoading = false
+          // }, 1000)
+          this.total = res.data.total
+          this.listLoading = false
+        })
+    },
+    saveCategory(data) {
+      updateCategory(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.isNew = true
+      this.isShow = true
+      this.articleCategoryTemp.createDate = new Date()
+      this.articleCategoryTemp.modificationDate = new Date()
+      // this.permissionTemp.createUser
+      // this.permissionTemp.lastModifyUser
     },
     handleUpdate(row) {
-      this.categoryTemp = Object.assign({}, row)
-      this.dialogFormVisible = true
+      this.isNew = false
+      this.articleCategoryTemp = Object.assign({}, row)
+      this.isShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
-    },
-    handleCreate(row) {
-      this.categoryTemp = Object.assign({}, row)
-      this.dialogCreateFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      // update
-    },
-    createData() {
-      // create
     },
     handleModifyStatus(row, status) {
-      // this.$message({
-      //   message: '操作成功',
-      //   type: 'success'
-      // })
       row.status = status
+      // row.modificationDate = new Date()
+      // row.lastModifyUser
+      this.saveCategory(row)
+    },
+    updateData() {
+      this.saveCategory(this.articleCategoryTemp)
+      this.isShow = false
+    },
+    handleSearch() {
+      this.listQuery.page = 1
+      this.getCategory(this.listQuery)
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
-      // this.getList()
+      this.getCategory(this.listQuery)
     },
     handleCurrentChange(val) {
       this.listQuery.page = val
-      // this.getList()
+      this.getCategory(this.listQuery)
+    },
+    resetTemp() {
+      this.articleCategoryTemp = {
+        code: '',
+        name: '',
+        status: '',
+        rank: 0,
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: ''
+      }
     }
   }
 }
