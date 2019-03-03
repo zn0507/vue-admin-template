@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function getAllArticles(query) {
+export function getAllArticle(query) {
   return request({
-    url: '/article/list',
+    url: '/article',
     method: 'get',
     params: query
   })
@@ -18,7 +18,7 @@ export function getArticleById(id) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article/create',
+    url: '/article',
     method: 'post',
     data
   })

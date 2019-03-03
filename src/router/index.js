@@ -59,7 +59,7 @@ export const asyncRouterMap = [
         meta: { title: '新建文章', icon: 'table' }
       },
       {
-        path: 'update',
+        path: 'update/:id',
         name: 'ArticleUpdate',
         component: () => import('@/views/article/update/index'),
         meta: { title: '修改文章', icon: 'tree', roles: ['admin'] }

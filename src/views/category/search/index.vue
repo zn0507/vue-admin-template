@@ -1,5 +1,5 @@
 <template>
-  <div class="category-search-container">
+  <div class="category-container">
     <div class="category-filter-container">
       <el-row :gutter="20">
         <el-col :span="3">
@@ -14,7 +14,7 @@
           </el-select>
         </el-col>
         <el-col :span="2">
-          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+          <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
         </el-col>
         <el-col :span="2">
           <el-button v-waves class="filter-item" type="warning" icon="el-icon-plus" @click="handleCreate()">新建</el-button>
@@ -24,24 +24,24 @@
 
     <el-table
       v-loading="listLoading"
-      :data="list"
+      :data="articleCategoryList"
       border
       fit
       highlight-current-row
-      row-class-name="article-search-table-row"
+      row-class-name="permission-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
-      <el-table-column :label="$t('table.code')" align="center" width="100">
+      <el-table-column :label="$t('table.code')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.name')" width="150px" align="center">
+      <el-table-column :label="$t('table.name')" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.rank')" width="100" align="center">
+      <el-table-column :label="$t('table.rank')" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.rank }}</span>
         </template>
@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.modifyDate }}</span>
+          <span>{{ scope.row.modificationDate }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.createUser')" width="100" align="center">
@@ -66,7 +66,7 @@
           <span>{{ scope.row.lastModifyUser }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" width="100px" align="center">
+      <el-table-column :label="$t('table.status')" width="100px" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusTypeFilter">{{ scope.row.status | statusFilters }}</el-tag>
         </template>
@@ -83,28 +83,37 @@
     </el-table>
 
     <div class="category-pagination-container">
-      <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+      <el-pagination
+        v-show="total>0"
+        :current-page="listQuery.page"
+        :page-sizes="[10,20,30, 50]"
+        :page-size="listQuery.limit"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
     </div>
 
-    <el-dialog :title="$t('table.edit')" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleCategoryTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
+    <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
+      <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleCategoryTemp" label-position="center" label-width="70px" style="width: 600px">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="articleCategoryTemp.code" :disabled="true" />
+          <el-input v-model="articleCategoryTemp.code" :disabled="isNew !== true" />
         </el-form-item>
-        <el-form-item :label="$t('table.name')" prop="title">
+        <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="articleCategoryTemp.name" />
         </el-form-item>
         <el-form-item :label="$t('table.status')">
-          <el-select v-model="articleCategoryTemp.status" class="filter-item">
+          <el-select v-model="articleCategoryTemp.status" class="filter-item" style="width: 185px" clearable>
             <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.rank')" prop="rank">
-          <el-input-number v-model="articleCategoryTemp.rank" :min="0" controls-position="right" />
+          <el-input-number v-model="articleCategoryTemp.rank" :min="0" controls-position="right"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button @click="isShow = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -251,7 +260,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.category-search {
+.category {
   &-container {
     margin: 30px;
   }

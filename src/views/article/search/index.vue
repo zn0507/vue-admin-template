@@ -1,20 +1,21 @@
 <template>
   <div class="article-search-container">
     <div class="article-filter-container">
-      <el-input placeholder="文章编号" style="width: 200px" class="filter-item"/>
-      <el-input placeholder="文章标题" style="width: 400px" class="filter-item"/>
-      <el-select v-model="categoryFilter" placeholder="文章类别" clearable style="width: 200px" class="filter-item">
-        <el-option v-for="item in category" :key="item" :label="item" :value="item"/>
+      <el-input v-model="listQuery.code" placeholder="文章编号" style="width: 200px" class="filter-item"/>
+      <el-input v-model="listQuery.title" placeholder="文章标题" style="width: 400px" class="filter-item"/>
+      <el-select v-model="listQuery.category" placeholder="文章类别" clearable style="width: 200px" class="filter-item">
+        <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
       </el-select>
-      <el-date-picker v-model="dateFilter" type="date" placeholder="创建日期" style="width: 150px"/>
-      <el-select v-model="statusFilter" placeholder="状态" clearable style="width: 100px" class="filter-item">
+      <el-date-picker v-model="listQuery.createDate" type="date" placeholder="创建日期" style="width: 150px"/>
+      <el-select v-model="listQuery.status" placeholder="状态" clearable style="width: 100px" class="filter-item">
         <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" >搜索</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
     </div>
 
     <el-table
-      :data="list"
+      v-loading="listLoading"
+      :data="articleList"
       border
       fit
       highlight-current-row
@@ -28,7 +29,7 @@
       </el-table-column>
       <el-table-column label="类别" width="150px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.category }}</span>
+          <span>{{ scope.row.articleCategory.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="100" align="center">
@@ -38,7 +39,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.modifyDate }}</span>
+          <span>{{ scope.row.modificationDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="标题" width="550px" align="center">
@@ -78,7 +79,7 @@
       <!--</el-table-column>-->
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.code)">编辑正文</el-button>
+          <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.id)">编辑正文</el-button>
           <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">修改参数</el-button>
           <el-button v-if="scope.row.status==='draft'" size="mini" type="success" @click="handleModifyStatus(scope.row,'publish')">{{ $t('table.publish') }}
           </el-button>
@@ -92,7 +93,7 @@
       <el-pagination v-show="total>0" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
     </div>
 
-    <el-dialog :title="$t('table.editArticle')" :visible.sync="dialogFormVisible">
+    <el-dialog :title="$t('table.editArticle')" :visible.sync="isShow">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
         <el-form-item :label="$t('table.code')" prop="code" >
           <el-input v-model="articleTemp.code" :disabled="true" style="width: 300px"/>
@@ -124,7 +125,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button @click="isShow = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="updateData()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -133,7 +134,7 @@
 
 <script>
 import waves from '@/directive/waves'
-// import { parseTime } from '@/utils'
+import { updateArticle, getAllArticle, getAllCategory } from '@/api/article'
 export default {
   name: 'ArticleSearch',
   directives: {
@@ -157,64 +158,48 @@ export default {
   },
   data() {
     return {
-      listLoading: true,
-      dialogFormVisible: false,
-      category: ['java', 'nginx', 'springboot'],
-      categoryFilter: '',
-      dateFilter: '',
+      category: [],
+      isShowCreate: false,
+      isShow: false,
+      isNew: false,
       statusFilter: '',
       status: ['publish', 'draft'],
-      total: 3,
+      total: 0,
+      listLoading: false,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 10,
+        code: '',
+        name: '',
+        status: '',
+        id: '',
+        title: '',
+        category: '',
+        createDate: ''
       },
-      list: [
-        {
-          code: 'art1',
-          category: 'java',
-          createDate: '2001-02-02',
-          modifyDate: '2001-02-02',
-          title: 'springboot(十七)：使用Spring Boot上传文件1231312312313123',
-          status: 'publish',
-          readings: 1222,
-          likes: 1233,
-          comments: 20,
-          rank: 2000
-        },
-        {
-          code: 'art12111',
-          category: 'java',
-          createDate: '2001-02-02',
-          modifyDate: '2001-02-02',
-          title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'publish',
-          readings: 22,
-          likes: 1233,
-          comments: 2,
-          rank: 2351
-        },
-        {
-          code: 'art12111',
-          category: 'java',
-          createDate: '2001-02-02',
-          modifyDate: '2001-02-02',
-          title: 'springboot(十七)：使用Spring Boot上传文件',
-          status: 'draft',
-          readings: 222,
-          likes: 1233,
-          comments: 244,
-          rank: 1112
-        }
-
-      ],
+      pQuery: {
+        page: 0,
+        limit: 0,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: ''
+      },
+      articleList: [],
       articleTemp: {
         code: '',
-        category: '',
-        createDate: '',
-        title: '',
+        name: '',
         status: '',
-        readNumber: 0
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: '',
+        category: '',
+        title: '',
+        readings: 0,
+        likes: 0,
+        comments: 0,
+        rank: 0
       },
       rules: {
         // type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -223,50 +208,96 @@ export default {
       }
     }
   },
-  created() {
-    this.getList()
+  beforeMount() {
+    getAllCategory(this.pQuery)
+      .then(res => {
+        this.category = res.data.content
+      })
   },
   methods: {
-    getList() {
+    getArticles(query) {
       this.listLoading = true
-      this.listLoading = false
-      // fetchList(this.listQuery).then(response => {
-      //   this.list = response.data.items
-      //   this.total = response.data.total
-      //
-      //   // Just to simulate the time of the request
-      //   setTimeout(() => {
-      //     this.listLoading = false
-      //   }, 1.5 * 1000)
-      // })
+      getAllArticle(query)
+        .then(res => {
+          this.articleList = res.data.content
+          // Just to simulate the time of the request
+          // setTimeout(() => {
+          //   this.listLoading = false
+          // }, 1000)
+          this.total = res.data.total
+          this.listLoading = false
+        })
     },
-    handleModifyStatus(row, status) {
-      // this.$message({
-      //   message: '操作成功',
-      //   type: 'success'
-      // })
-      row.status = status
+    saveArticle(data) {
+      updateArticle(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
     },
-    handleEditContent(code) {
-      // 转到update页面
+    handleSearch() {
+      this.listQuery.page = 1
+      this.getArticles(this.listQuery)
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.isNew = true
+      this.isShow = true
+      this.articleTemp.createDate = new Date()
+      this.articleTemp.modificationDate = new Date()
+      // this.permissionTemp.createUser
+      // this.permissionTemp.lastModifyUser
     },
     handleUpdate(row) {
+      this.isNew = false
       this.articleTemp = Object.assign({}, row)
-      this.dialogFormVisible = true
+      this.isShow = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handleModifyStatus(row, status) {
+      row.status = status
+      // row.modificationDate = new Date()
+      // row.lastModifyUser
+      this.saveArticle(row)
+    },
     updateData() {
-      // 更新article
+      const article = Object.assign({}, this.articleTemp)
+      this.saveArticle(article)
+      this.isShow = false
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
-      // this.getList()
+      this.getArticles(this.listQuery)
     },
     handleCurrentChange(val) {
       this.listQuery.page = val
-      // this.getList()
+      this.getArticles(this.listQuery)
+    },
+    resetTemp() {
+      this.articleTemp = {
+        code: '',
+        name: '',
+        status: '',
+        createUser: '',
+        lastModifyUser: '',
+        createDate: '',
+        modificationDate: '',
+        category: '',
+        title: '',
+        readings: 0,
+        likes: 0,
+        comments: 0,
+        rank: 0
+      }
+    },
+    handleEditContent(id) {
+      this.$router.push('/article/update/' + id)
     }
   }
 }

@@ -14,18 +14,15 @@
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.category" :placeholder="$t('table.category')" clearable>
-              <el-option label="java" value="java"/>
-              <el-option label="springboot" value="springboot"/>
-              <el-option label="springboot1" value="springboot1"/>
+            <el-select v-model="form.articleCategory" :placeholder="$t('table.category')" value-key="id">
+              <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.type" placeholder="类型">
-              <el-option label="原创" value="original"/>
-              <el-option label="转载" value="reprinted"/>
+            <el-select v-model="form.articleType" placeholder="类型" value-key="code">
+              <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code"/>
             </el-select>
           </el-form-item>
         </el-col>
@@ -56,14 +53,14 @@
         </el-col>
         <el-col :span="3">
           <el-form-item :label="$t('table.modify')" prop="rank" label-width="60px" >
-            <el-date-picker v-model="form.modifyDate" type="date" style="width: 140px"/>
+            <el-date-picker v-model="form.modificationDate" type="date" style="width: 140px"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="18">
-          <markdown-editor v-show="isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-          <markdown-editor v-show="!isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary" :z-index="20" style="height: auto"/>
+          <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
+          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.articleSummary.content" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
@@ -112,6 +109,8 @@
 import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
+import { getAllArticle, getAllCategory, updateArticle } from '@/api/article'
+
 export default {
   name: 'ArticleUpdate',
   components: { MarkdownEditor },
@@ -120,31 +119,89 @@ export default {
   },
   data() {
     return {
+      listLoading: false,
       dialogPictureImageUrl: '',
       dialogPictureVisible: false,
       isShowUpload: false,
       isShowContent: false,
       form: {
         title: '',
-        content: '',
-        summary: '',
+        content: '1',
+        articleSummary: {},
         status: '',
-        category: '',
-        type: '',
+        articleType: '',
         link: '',
         likes: 0,
         readings: 0,
         comments: 0,
         rank: 0,
         createDate: '',
-        modifyDate: ''
+        modificationDate: '',
+        articleCategory: {},
+        createUser: '',
+        lastModifyUser: ''
+      },
+      query: {
+        page: 1,
+        limit: 10,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: '',
+        title: '',
+        category: '',
+        createDate: ''
       },
       contentPictureList: [],
       summaryPictureList: [],
-      html: ''
+      html: '',
+      category: [],
+      pQuery: {
+        page: 0,
+        limit: 0,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: ''
+      },
+      type: [{
+        code: 'original',
+        name: '原创'
+      }, {
+        code: 'reprinted',
+        name: '转载'
+      }]
     }
   },
+  beforeMount() {
+    getAllCategory(this.pQuery)
+      .then(res => {
+        this.category = res.data.content
+      })
+    this.query.id = this.$route.params.id
+    this.getArticle(this.query)
+  },
   methods: {
+    getArticle(query) {
+      this.listLoading = true
+      getAllArticle(query)
+        .then(res => {
+          this.form = res.data.content[0]
+          this.form.articleCategory = this.form.articleCategory.id
+          this.listLoading = false
+        })
+    },
+    saveArticle(data) {
+      updateArticle(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
+    },
     handlePicturePreview(file) {
       this.dialogPictureImageUrl = file.url
       this.dialogPictureVisible = true
@@ -166,7 +223,7 @@ export default {
       import('showdown').then(showdown => {
         const converter = new showdown.Converter()
         this.form.content = converter.makeHtml(this.form.content)
-        this.form.summary = converter.makeHtml(this.form.summary)
+        this.form.articleSummary.content = converter.makeHtml(this.form.articleSummary.content)
       })
     }
   }

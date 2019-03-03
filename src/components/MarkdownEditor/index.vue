@@ -88,7 +88,7 @@ export default {
 
 <style scoped>
 .simplemde-container>>>.CodeMirror {
-  height: 600px;
+  height: 560px;
   line-height: 20px;
   margin-bottom: 10px;
 }
