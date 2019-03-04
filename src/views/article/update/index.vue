@@ -1,29 +1,10 @@
 <template>
   <div class="article-update-container">
     <el-form ref="form" :model="form" label-width="50px" label-position="left">
-      <el-form-item :label="$t('table.title')">
-        <el-input v-model="form.title"/>
-      </el-form-item>
       <el-row :gutter="10">
-        <el-col :span="2">
-          <el-switch
-            v-model="isShowContent"
-            active-text="摘要"
-            inactive-text="正文"
-            style="top: 10px;"/>
-        </el-col>
-        <el-col :span="2">
-          <el-form-item label-width="0">
-            <el-select v-model="form.articleCategory" :placeholder="$t('table.category')" value-key="id">
-              <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="2">
-          <el-form-item label-width="0">
-            <el-select v-model="form.articleType" placeholder="类型" value-key="code">
-              <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code"/>
-            </el-select>
+        <el-col :span="12">
+          <el-form-item :label="$t('table.title')">
+            <el-input v-model="form.title"/>
           </el-form-item>
         </el-col>
         <el-col :span="3">
@@ -46,6 +27,30 @@
             <el-input-number v-model="form.rank" :min="0" controls-position="right" style="width: 120px"/>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="2">
+          <el-switch
+            v-model="isShowContent"
+            active-text="摘要"
+            inactive-text="正文"
+            style="top: 10px;"/>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item label-width="0">
+            <el-select v-model="form.articleCategory" :placeholder="$t('table.category')" value-key="id">
+              <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-form-item label-width="0">
+            <el-select v-model="form.articleType" placeholder="类型" value-key="code">
+              <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
         <el-col :span="3">
           <el-form-item :label="$t('table.create')" prop="rank" label-width="60px" >
             <el-date-picker v-model="form.createDate" type="date" style="width: 140px"/>
@@ -54,6 +59,11 @@
         <el-col :span="3">
           <el-form-item :label="$t('table.modify')" prop="rank" label-width="60px" >
             <el-date-picker v-model="form.modificationDate" type="date" style="width: 140px"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item :label="$t('table.link')" label-width="70px">
+            <el-input v-model="form.link"/>
           </el-form-item>
         </el-col>
       </el-row>
