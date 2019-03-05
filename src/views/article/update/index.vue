@@ -45,24 +45,23 @@
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.articleType" placeholder="类型" value-key="code">
-              <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code"/>
+            <el-select v-model="form.articleType" placeholder="类型" value-key="code" @change="changeArticleType">
+              <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
           </el-form-item>
         </el-col>
-
         <el-col :span="3">
-          <el-form-item :label="$t('table.create')" prop="rank" label-width="60px" >
+          <el-form-item :label="$t('table.summaryRank')" label-width="70px" >
+            <el-input-number v-model="form.articleSummary.rank" :min="0" controls-position="right" style="width: 120px"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item :label="$t('table.createDate')" prop="rank" label-width="70px" >
             <el-date-picker v-model="form.createDate" type="date" style="width: 140px"/>
           </el-form-item>
         </el-col>
-        <el-col :span="3">
-          <el-form-item :label="$t('table.modify')" prop="rank" label-width="60px" >
-            <el-date-picker v-model="form.modificationDate" type="date" style="width: 140px"/>
-          </el-form-item>
-        </el-col>
         <el-col :span="6">
-          <el-form-item :label="$t('table.link')" label-width="70px">
+          <el-form-item v-show="isShowLink" :label="$t('table.link')" label-width="70px">
             <el-input v-model="form.link"/>
           </el-form-item>
         </el-col>
@@ -134,6 +133,7 @@ export default {
       dialogPictureVisible: false,
       isShowUpload: false,
       isShowContent: false,
+      isShowLink: false,
       form: {
         title: '',
         content: '1',
@@ -190,6 +190,7 @@ export default {
       })
     this.query.id = this.$route.params.id
     this.getArticle(this.query)
+    this.isShowLink = this.form.articleType === 'original'
   },
   methods: {
     getArticle(query) {
@@ -225,7 +226,7 @@ export default {
       console.log('size:' + file.size / 1024 + 'KB')
     },
     onSubmit() {
-
+      this.saveArticle(this.form)
     },
     onPublish() {
     },
@@ -235,6 +236,9 @@ export default {
         this.form.content = converter.makeHtml(this.form.content)
         this.form.articleSummary.content = converter.makeHtml(this.form.articleSummary.content)
       })
+    },
+    changeArticleType(val) {
+      this.isShowLink = val !== 'original'
     }
   }
 }

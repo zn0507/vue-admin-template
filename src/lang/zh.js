@@ -123,7 +123,8 @@ export default {
     createUser: '创建用户',
     lastModifyUser: '最后修改用户',
     role: '角色',
-    password: '密码'
+    password: '密码',
+    summaryRank: '摘要评分'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
