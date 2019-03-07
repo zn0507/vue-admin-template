@@ -17,9 +17,14 @@
             <el-input-number v-model="form.likes" :min="0" controls-position="right" style="width: 120px"/>
           </el-form-item>
         </el-col>
+        <!--<el-col :span="3">-->
+        <!--<el-form-item :label="$t('table.comments')" prop="comments" label-width="60px" >-->
+        <!--<el-input-number v-model="form.comments" :min="0" controls-position="right" style="width: 120px"/>-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
         <el-col :span="3">
-          <el-form-item :label="$t('table.comments')" prop="comments" label-width="60px" >
-            <el-input-number v-model="form.comments" :min="0" controls-position="right" style="width: 120px"/>
+          <el-form-item :label="$t('table.summaryRank')" label-width="70px" >
+            <el-input-number v-model="form.articleSummary.rank" :min="0" controls-position="right" style="width: 120px"/>
           </el-form-item>
         </el-col>
         <el-col :span="3">
@@ -50,17 +55,13 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="3">
-          <el-form-item :label="$t('table.summaryRank')" label-width="70px" >
-            <el-input-number v-model="form.articleSummary.rank" :min="0" controls-position="right" style="width: 120px"/>
-          </el-form-item>
-        </el-col>
+
         <el-col :span="3">
           <el-form-item :label="$t('table.createDate')" prop="rank" label-width="70px" >
             <el-date-picker v-model="form.createDate" type="date" style="width: 140px"/>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" style="margin-left: 10px">
           <el-form-item v-show="isShowLink" :label="$t('table.link')" label-width="70px">
             <el-input v-model="form.link"/>
           </el-form-item>
@@ -190,7 +191,7 @@ export default {
       })
     this.query.id = this.$route.params.id
     this.getArticle(this.query)
-    this.isShowLink = this.form.articleType === 'original'
+    this.isShowLink = this.form.articleType !== 'original'
   },
   methods: {
     getArticle(query) {
@@ -226,7 +227,10 @@ export default {
       console.log('size:' + file.size / 1024 + 'KB')
     },
     onSubmit() {
-      this.saveArticle(this.form)
+      const article = Object.assign({}, this.form)
+      article.menu = ''
+      article.articleCategory = { 'id': this.form.articleCategory }
+      this.saveArticle(article)
     },
     onPublish() {
     },
