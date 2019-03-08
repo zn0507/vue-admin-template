@@ -56,6 +56,10 @@
           </el-form-item>
         </el-col>
 
+        <el-col :span="2">
+          <el-button plain>修改文章目录</el-button>
+        </el-col>
+
         <el-col :span="3">
           <el-form-item :label="$t('table.createDate')" prop="rank" label-width="70px" >
             <el-date-picker v-model="form.createDate" type="date" style="width: 140px"/>
@@ -74,33 +78,37 @@
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
-            <el-col :span="24" style="height: 650px; " class="upload-picture">
+            <el-col :span="24" style="height: 350px; " class="upload-picture">
               <el-scrollbar style="height: 100%;">
                 <el-upload
-                  v-show="isShowContent"
-                  :file-list="contentPictureList"
+                  ref="upload"
+                  :file-list="pictureList"
                   :before-upload="beforeUpload"
                   :on-preview="handlePicturePreview"
                   :on-remove="handlePictureRemove"
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :on-success="loadSuccess"
+                  :on-error="loadError"
+                  :auto-upload="false"
+                  action="/picture/upload"
                   list-type="picture"
                 >
-                  <el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>
-                </el-upload>
-                <el-upload
-                  v-show="!isShowContent"
-                  :file-list="summaryPictureList"
-                  :on-preview="handlePicturePreview"
-                  :on-remove="handlePictureRemove"
-                  :before-upload="beforeUpload"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  list-type="picture"
-                >
-                  <el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>
+                  <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
+                  <el-button slot="trigger" style="width: 200px" size="small" plain round>选取图片</el-button>
+                  <el-button style="width: 200px" size="small" plain round @click="submitUpload">上传到服务器</el-button>
                 </el-upload>
               </el-scrollbar>
             </el-col>
           </el-form-item>
+          <el-row style="margin: 10px 0;">
+            <el-button style="width: 200px" size="small" round plain>获取文章所有图片</el-button>
+          </el-row>
+          <el-row>
+            <el-col :span="24" style="height: 250px;" class="upload-picture">
+              <el-scrollbar style="height: 100%;">
+                文章图片
+              </el-scrollbar>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
       <el-form-item label-width="0">
@@ -163,8 +171,7 @@ export default {
         category: '',
         createDate: ''
       },
-      contentPictureList: [],
-      summaryPictureList: [],
+      pictureList: [],
       html: '',
       category: [],
       pQuery: {
@@ -225,6 +232,29 @@ export default {
       console.log(file)
       // const isLt2M = file.size / 1024 / 1024 < 2;
       console.log('size:' + file.size / 1024 + 'KB')
+    },
+    loadSuccess(res) {
+      console.log(1)
+      if (res.status === 1) {
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        })
+      } else if (res.status === 0) {
+        this.$message({
+          message: res.msg,
+          type: 'warning'
+        })
+      } else {
+        this.$message.error('上传失败')
+      }
+    },
+    loadError() {
+      this.$refs.upload.clearFiles()
+      this.$message.error('上传失败')
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
     },
     onSubmit() {
       const article = Object.assign({}, this.form)

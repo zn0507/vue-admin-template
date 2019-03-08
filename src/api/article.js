@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+export const ArticlePrefix = '/artSer'
+
 export function getAllArticle(query) {
   return request({
     url: '/article',

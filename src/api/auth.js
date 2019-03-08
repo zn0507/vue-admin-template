@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+export const UserPrefix = '/userSer'
+
 export function getAllPermissionEnums() {
   return request({
     url: '/permissionEnum',
