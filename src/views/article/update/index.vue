@@ -83,6 +83,7 @@
                 <el-upload
                   ref="upload"
                   :file-list="pictureList"
+                  :data="pictureProps"
                   :before-upload="beforeUpload"
                   :on-preview="handlePicturePreview"
                   :on-remove="handlePictureRemove"
@@ -143,6 +144,9 @@ export default {
       isShowUpload: false,
       isShowContent: false,
       isShowLink: false,
+      pictureProps: {
+        articleId: ''
+      },
       form: {
         title: '',
         content: '1',
@@ -232,6 +236,7 @@ export default {
       console.log(file)
       // const isLt2M = file.size / 1024 / 1024 < 2;
       console.log('size:' + file.size / 1024 + 'KB')
+      this.pictureProps.articleId = this.form.id
     },
     loadSuccess(res) {
       console.log(1)
