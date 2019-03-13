@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 export const ArticlePrefix = '/artSer'
+export const PicturePrefix = 'http://localhost:81/article/'
 
 export function getAllArticle(query) {
   return request({
@@ -47,5 +48,13 @@ export function updateCategory(data) {
     url: '/articleCategory',
     method: 'post',
     data
+  })
+}
+
+export function getAllPicture(query) {
+  return request({
+    url: '/articlePicture',
+    method: 'get',
+    params: query
   })
 }

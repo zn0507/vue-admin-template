@@ -101,12 +101,12 @@
             </el-col>
           </el-form-item>
           <el-row style="margin: 10px 0;">
-            <el-button style="width: 200px" size="small" round plain>获取文章所有图片</el-button>
+            <el-button style="width: 200px" size="small" round plain @click="getAllPicture">获取文章所有图片</el-button>
           </el-row>
           <el-row>
             <el-col :span="24" style="height: 250px;" class="upload-picture">
               <el-scrollbar style="height: 100%;">
-                文章图片
+                <img v-for="pic in pictures" :key="pic.id" :src="pic.link" width="120" alt="" @click="showPic(pic)">
               </el-scrollbar>
             </el-col>
           </el-row>
@@ -119,6 +119,7 @@
     </el-form>
 
     <el-dialog :visible.sync="dialogPictureVisible">
+      <el-row>{{ dialogPictureName }}</el-row>
       <img :src="dialogPictureImageUrl" width="100%" alt="">
     </el-dialog>
   </div>
@@ -128,7 +129,7 @@
 import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
-import { getAllArticle, getAllCategory, updateArticle } from '@/api/article'
+import { getAllArticle, getAllCategory, updateArticle, PicturePrefix, getAllPicture } from '@/api/article'
 
 export default {
   name: 'ArticleUpdate',
@@ -141,10 +142,20 @@ export default {
       listLoading: false,
       dialogPictureImageUrl: '',
       dialogPictureVisible: false,
+      dialogPictureName: '',
       isShowUpload: false,
       isShowContent: false,
       isShowLink: false,
       pictureProps: {
+        articleId: ''
+      },
+      picQuery: {
+        page: 1,
+        limit: 10,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: '',
         articleId: ''
       },
       form: {
@@ -192,7 +203,8 @@ export default {
       }, {
         code: 'reprinted',
         name: '转载'
-      }]
+      }],
+      pictures: []
     }
   },
   beforeMount() {
@@ -205,6 +217,16 @@ export default {
     this.isShowLink = this.form.articleType !== 'original'
   },
   methods: {
+    getPictures(query) {
+      getAllPicture(query)
+        .then(res => {
+          res.data.content.forEach(pic => {
+            const picTemp = Object.assign({}, pic)
+            picTemp.link = PicturePrefix + picTemp.link
+            this.pictures.push(picTemp)
+          })
+        })
+    },
     getArticle(query) {
       this.listLoading = true
       getAllArticle(query)
@@ -233,22 +255,16 @@ export default {
       console.log(file, fileList)
     },
     beforeUpload(file) {
-      console.log(file)
+      // console.log(file)
       // const isLt2M = file.size / 1024 / 1024 < 2;
-      console.log('size:' + file.size / 1024 + 'KB')
+      // console.log('size:' + file.size / 1024 + 'KB')
       this.pictureProps.articleId = this.form.id
     },
     loadSuccess(res) {
-      console.log(1)
-      if (res.status === 1) {
+      if (res === 'SUCCESS') {
         this.$message({
           message: '上传成功',
           type: 'success'
-        })
-      } else if (res.status === 0) {
-        this.$message({
-          message: res.msg,
-          type: 'warning'
         })
       } else {
         this.$message.error('上传失败')
@@ -278,6 +294,16 @@ export default {
     },
     changeArticleType(val) {
       this.isShowLink = val !== 'original'
+    },
+    getAllPicture() {
+      this.pictures = []
+      this.picQuery.articleId = this.form.id
+      this.getPictures(this.picQuery)
+    },
+    showPic(val) {
+      this.dialogPictureVisible = true
+      this.dialogPictureImageUrl = val.link
+      this.dialogPictureName = val.link
     }
   }
 }
