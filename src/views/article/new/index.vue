@@ -22,10 +22,8 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.category" placeholder="类别" clearable>
-              <el-option label="java" value="java"/>
-              <el-option label="springboot" value="springboot"/>
-              <el-option label="springboot1" value="springboot1"/>
+            <el-select v-model="form.category" placeholder="文章类别" clearable style="width: 200px" class="filter-item">
+              <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
         </el-col>
@@ -95,6 +93,7 @@
 import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
+import { updateArticle, getAllCategory } from '@/api/article'
 export default {
   name: 'ArticleNew',
   components: { MarkdownEditor },
@@ -111,12 +110,29 @@ export default {
       form: {
         title: '',
         content: '',
-        summary: '',
+        articleSummary: {},
         status: '',
-        category: '',
-        type: '',
-        link: ''
+        articleType: '',
+        link: '',
+        likes: 0,
+        readings: 0,
+        comments: 0,
+        rank: 0,
+        createDate: '',
+        modificationDate: '',
+        articleCategory: {},
+        createUser: '',
+        lastModifyUser: ''
       },
+      pQuery: {
+        page: 0,
+        limit: 0,
+        code: '',
+        name: '',
+        status: 'publish',
+        id: ''
+      },
+      category: [],
       contentPictureList: [],
       summaryPictureList: [],
       html: ''
@@ -125,8 +141,8 @@ export default {
   watch: {
     form: {
       handler(val, oldVal) {
-        console.log(val)
-        console.log(oldVal)
+        // console.log(val)
+        // console.log(oldVal)
       },
       deep: true
     },
@@ -134,7 +150,24 @@ export default {
       this.isShowLink = val === 'reprinted'
     }
   },
+  beforeMount() {
+    getAllCategory(this.pQuery)
+      .then(res => {
+        this.category = res.data.content
+      })
+  },
   methods: {
+    saveArticle(data) {
+      updateArticle(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message({
+              message: '操作成功',
+              type: 'success'
+            })
+          }
+        })
+    },
     handlePicturePreview(file) {
       this.dialogPictureImageUrl = file.url
       this.dialogPictureVisible = true

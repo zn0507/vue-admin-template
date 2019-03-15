@@ -160,7 +160,7 @@ export default {
       },
       form: {
         title: '',
-        content: '1',
+        content: '',
         articleSummary: {},
         status: '',
         articleType: '',
@@ -214,7 +214,7 @@ export default {
       })
     this.query.id = this.$route.params.id
     this.getArticle(this.query)
-    this.isShowLink = this.form.articleType !== 'original'
+    this.isShowLink = this.form.articleType === 'original'
   },
   methods: {
     getPictures(query) {
@@ -284,6 +284,11 @@ export default {
       this.saveArticle(article)
     },
     onPublish() {
+      const article = Object.assign({}, this.form)
+      article.menu = ''
+      article.articleCategory = { 'id': this.form.articleCategory }
+      article.status = 'publish'
+      this.saveArticle(article)
     },
     markdown2Html() {
       import('showdown').then(showdown => {

@@ -117,9 +117,9 @@
         <el-form-item :label="$t('table.likes')" prop="likes">
           <el-input-number v-model="articleTemp.likes" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
-        <el-form-item :label="$t('table.comments')" prop="comments">
-          <el-input-number v-model="articleTemp.comments" :min="0" controls-position="right" style="width: 300px"/>
-        </el-form-item>
+        <!--<el-form-item :label="$t('table.comments')" prop="comments">-->
+        <!--<el-input-number v-model="articleTemp.comments" :min="0" controls-position="right" style="width: 300px"/>-->
+        <!--</el-form-item>-->
         <el-form-item :label="$t('table.rank')" prop="rank">
           <el-input-number v-model="articleTemp.rank" :min="0" controls-position="right" style="width: 300px"/>
         </el-form-item>
@@ -264,10 +264,12 @@ export default {
       row.status = status
       // row.modificationDate = new Date()
       // row.lastModifyUser
+      row.menu = ''
       this.saveArticle(row)
     },
     updateData() {
       const article = Object.assign({}, this.articleTemp)
+      article.menu = ''
       this.saveArticle(article)
       this.isShow = false
     },
