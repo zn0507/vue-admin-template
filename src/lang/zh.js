@@ -94,9 +94,9 @@ export default {
     imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
   },
   table: {
-    title: '标题',
-    type: '类型',
-    category: '类别',
+    title: '文章标题',
+    type: '文章类型',
+    category: '文章类别',
     code: '编号',
     date: '时间',
     readings: '阅读数',

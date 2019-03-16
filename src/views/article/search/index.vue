@@ -102,8 +102,8 @@
           <el-input v-model="articleTemp.title" :disabled="true" style="width: 300px"/>
         </el-form-item>
         <el-form-item :label="$t('table.category')">
-          <el-select v-model="articleTemp.category" class="filter-item" style="width: 300px">
-            <el-option v-for="item in category" :key="item" :label="item" :value="item"/>
+          <el-select v-model="articleTemp.articleCategory.id" :placeholder="$t('table.category')" clearable style="width: 200px">
+            <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.status')" >
@@ -194,7 +194,7 @@ export default {
         lastModifyUser: '',
         createDate: '',
         modificationDate: '',
-        category: '',
+        articleCategory: { 'id': '' },
         title: '',
         readings: 0,
         likes: 0,
