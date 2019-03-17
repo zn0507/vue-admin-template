@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-export const ArticlePrefix = '/artSer'
+export const ArticlePrefix = '/api/artSer'
 export const PicturePrefix = 'http://localhost:81/article/'
 
 export function getAllArticle(query) {
   return request({
-    url: '/article',
+    url: ArticlePrefix + '/article',
     method: 'get',
     params: query
   })
@@ -13,7 +13,7 @@ export function getAllArticle(query) {
 
 export function getArticleById(id) {
   return request({
-    url: '/article/list',
+    url: ArticlePrefix + '/article/list',
     method: 'get',
     params: { id }
   })
@@ -21,7 +21,7 @@ export function getArticleById(id) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article',
+    url: ArticlePrefix + '/article',
     method: 'post',
     data
   })
@@ -29,7 +29,7 @@ export function updateArticle(data) {
 
 export function getAllCategory(query) {
   return request({
-    url: '/articleCategory',
+    url: ArticlePrefix + '/articleCategory',
     method: 'get',
     params: query
   })
@@ -37,7 +37,7 @@ export function getAllCategory(query) {
 
 export function getCategoryById(id) {
   return request({
-    url: '/category/list',
+    url: ArticlePrefix + '/category/list',
     method: 'get',
     params: { id }
   })
@@ -45,14 +45,14 @@ export function getCategoryById(id) {
 
 export function updateCategory(data) {
   return request({
-    url: '/articleCategory',
+    url: ArticlePrefix + '/articleCategory',
     method: 'post',
     data
   })
 }
 
 export function getAllPicture(query) {
-  return request({
+  return ArticlePrefix + request({
     url: '/articlePicture',
     method: 'get',
     params: query

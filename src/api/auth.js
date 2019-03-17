@@ -1,17 +1,17 @@
 import request from '@/utils/request'
 
-export const UserPrefix = '/userSer'
+export const UserPrefix = '/api/userSer'
 
 export function getAllPermissionEnums() {
   return request({
-    url: '/permissionEnum',
+    url: UserPrefix + '/permissionEnum',
     method: 'get'
   })
 }
 
 export function getAllPermissions(query) {
   return request({
-    url: '/permission',
+    url: UserPrefix + '/permission',
     method: 'get',
     params: query
   })
@@ -19,7 +19,7 @@ export function getAllPermissions(query) {
 
 export function updatePermission(data) {
   return request({
-    url: '/permission',
+    url: UserPrefix + '/permission',
     method: 'post',
     data
   })
@@ -27,7 +27,7 @@ export function updatePermission(data) {
 
 export function getPermissionById(id) {
   return request({
-    url: '/Permissions/list',
+    url: UserPrefix + '/Permissions/list',
     method: 'get',
     params: { id }
   })
@@ -35,7 +35,7 @@ export function getPermissionById(id) {
 
 export function getAllRoles(query) {
   return request({
-    url: '/role',
+    url: UserPrefix + '/role',
     method: 'get',
     params: query
   })
@@ -43,7 +43,7 @@ export function getAllRoles(query) {
 
 export function getRoleById(id) {
   return request({
-    url: '/Role/list',
+    url: UserPrefix + '/Role/list',
     method: 'get',
     params: { id }
   })
@@ -51,7 +51,7 @@ export function getRoleById(id) {
 
 export function updateRole(data) {
   return request({
-    url: '/role',
+    url: UserPrefix + '/role',
     method: 'post',
     data
   })
@@ -59,7 +59,7 @@ export function updateRole(data) {
 
 export function getAllUsers(query) {
   return request({
-    url: '/user',
+    url: UserPrefix + '/user',
     method: 'get',
     params: query
   })
