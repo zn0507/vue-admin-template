@@ -1,5 +1,8 @@
 import request from '@/utils/request'
 
+export const UserQueryInfo = {
+}
+
 export function login(username, password) {
   return request({
     url: '/user/login',

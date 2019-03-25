@@ -3,6 +3,9 @@ import request from '@/utils/request'
 export const ArticlePrefix = '/api/artSer'
 export const PicturePrefix = 'http://localhost:81/article/'
 
+export const ArtQueryInfo = {
+}
+
 export function getAllArticle(query) {
   return request({
     url: ArticlePrefix + '/article',
