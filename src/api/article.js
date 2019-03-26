@@ -4,6 +4,12 @@ export const ArticlePrefix = '/api/artSer'
 export const PicturePrefix = 'http://localhost:81/article/'
 
 export const ArtQueryInfo = {
+  page: 0,
+  limit: 0,
+  id: '',
+  code: '',
+  name: '',
+  status: 'publish'
 }
 
 export function getAllArticle(query) {

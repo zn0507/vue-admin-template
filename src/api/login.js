@@ -1,6 +1,12 @@
 import request from '@/utils/request'
 
 export const UserQueryInfo = {
+  page: 0,
+  limit: 0,
+  id: '',
+  code: '',
+  name: '',
+  status: 'publish'
 }
 
 export function login(username, password) {

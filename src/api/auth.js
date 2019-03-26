@@ -3,6 +3,12 @@ import request from '@/utils/request'
 export const UserPrefix = '/api/userSer'
 
 export const AuthQueryInfo = {
+  page: 0,
+  limit: 0,
+  id: '',
+  code: '',
+  name: '',
+  status: 'publish'
 }
 
 export function getAllPermissionEnums() {
