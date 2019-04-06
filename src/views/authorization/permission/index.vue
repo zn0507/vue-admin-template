@@ -124,7 +124,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getAllPermissionEnums, getAllPermissions, updatePermission } from '@/api/auth'
+import { getAllPermissionEnums, getAllPermissions, updatePermission } from '@/api/user'
 export default {
   name: 'Permission',
   directives: {

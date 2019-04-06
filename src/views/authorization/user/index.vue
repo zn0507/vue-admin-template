@@ -127,7 +127,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import { getAllRoles, getAllUsers, updateUser } from '@/api/auth'
+import { getAllRoles, getAllUsers, updateUser } from '@/api/user'
 export default {
   name: 'User',
   directives: {

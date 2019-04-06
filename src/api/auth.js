@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export const UserPrefix = '/api/userSer'
+export const AuthPrefix = '/api/authSer'
 
 export const AuthQueryInfo = {
   page: 0,
@@ -11,80 +11,36 @@ export const AuthQueryInfo = {
   status: 'publish'
 }
 
-export function getAllPermissionEnums() {
+export function get(query) {
   return request({
-    url: UserPrefix + '/permissionEnum',
-    method: 'get'
-  })
-}
-
-export function getAllPermissions(query) {
-  return request({
-    url: UserPrefix + '/permission',
+    url: AuthPrefix + '/permission',
     method: 'get',
     params: query
   })
 }
 
-export function updatePermission(data) {
+export function getJwtToken(data) {
   return request({
-    url: UserPrefix + '/permission',
+    url: AuthPrefix + '/oauth/token',
     method: 'post',
-    data
+    data: JSON.stringify({
+      grant_type: 'password',
+      username: 'admin',
+      password: 'admin'
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    auth: {
+      username: 'web',
+      password: 'secret'
+    }
   })
 }
 
-export function getPermissionById(id) {
+export function refreshJwtToken(data) {
   return request({
-    url: UserPrefix + '/Permissions/list',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function getAllRoles(query) {
-  return request({
-    url: UserPrefix + '/role',
-    method: 'get',
-    params: query
-  })
-}
-
-export function getRoleById(id) {
-  return request({
-    url: UserPrefix + '/Role/list',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function updateRole(data) {
-  return request({
-    url: UserPrefix + '/role',
-    method: 'post',
-    data
-  })
-}
-
-export function getAllUsers(query) {
-  return request({
-    url: UserPrefix + '/user',
-    method: 'get',
-    params: query
-  })
-}
-
-export function getUserById(id) {
-  return request({
-    url: '/user/list',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function updateUser(data) {
-  return request({
-    url: '/user',
+    url: AuthPrefix + '/oauth/refresh',
     method: 'post',
     data
   })

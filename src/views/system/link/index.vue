@@ -1,12 +1,28 @@
 <template>
   <div class="link-container">
     link
+    <el-button @click="getToken">123123123</el-button>
   </div>
 </template>
 
 <script>
+import { getJwtToken } from '@/api/auth'
 export default {
-  name: 'Link'
+  name: 'Link',
+  data() {
+    return {
+      auth: {
+        grant_type: 'password',
+        username: 'admin',
+        password: 'admin'
+      }
+    }
+  },
+  methods: {
+    getToken() {
+      getJwtToken(this.auth)
+    }
+  }
 }
 </script>
 
