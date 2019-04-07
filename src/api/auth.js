@@ -19,17 +19,14 @@ export function get(query) {
   })
 }
 
-export function getJwtToken(data) {
+export function getJwtToken(params) {
   return request({
     url: AuthPrefix + '/oauth/token',
     method: 'post',
-    data: JSON.stringify({
+    params: {
       grant_type: 'password',
-      username: 'admin',
-      password: 'admin'
-    }),
-    headers: {
-      'Content-Type': 'application/json'
+      username: params.username,
+      password: params.password
     },
     auth: {
       username: 'web',

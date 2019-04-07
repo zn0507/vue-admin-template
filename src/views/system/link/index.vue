@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       auth: {
-        grant_type: 'password',
         username: 'admin',
         password: 'admin'
       }
