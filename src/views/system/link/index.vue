@@ -20,6 +20,9 @@ export default {
   methods: {
     getToken() {
       getJwtToken(this.auth)
+        .then(res => {
+          console.log(res)
+        })
     }
   }
 }

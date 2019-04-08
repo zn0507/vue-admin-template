@@ -1,5 +1,7 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getJwtToken } from '@/api/auth'
+import { getAllUsers, UserQueryInfo } from '@/api/user'
 
 const user = {
   state: {
@@ -40,6 +42,19 @@ const user = {
       })
     },
 
+    LoginBk({ commit }, userInfo) {
+      return new Promise((resolve, reject) => {
+        getJwtToken(userInfo).then(response => {
+          const data = response.data
+          setToken(data)
+          commit('SET_TOKEN', data.access_token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -52,6 +67,25 @@ const user = {
           }
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    GetUserInfo({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        const userInfo = UserQueryInfo
+        userInfo.code = 'admin'
+        userInfo.name = 'zn1'
+        userInfo.page = 1
+        userInfo.limit = 10
+        getAllUsers(userInfo).then(response => {
+          // const data = response.data// 验证返回的roles是否是一个非空数组
+          commit('SET_ROLES', ['admin'])
+          commit('SET_NAME', 'admin')
+          commit('SET_AVATAR', '')
           resolve(response)
         }).catch(error => {
           reject(error)
