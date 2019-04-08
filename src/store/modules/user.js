@@ -80,7 +80,7 @@ const user = {
         userInfo.code = 'admin'
         userInfo.name = 'zn1'
         userInfo.page = 1
-        userInfo.limit = 10
+        userInfo.limit = 1
         getAllUsers(userInfo).then(response => {
           // const data = response.data// 验证返回的roles是否是一个非空数组
           commit('SET_ROLES', ['admin'])
