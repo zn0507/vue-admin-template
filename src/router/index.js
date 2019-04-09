@@ -50,13 +50,13 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'ArticleSearch',
         component: () => import('@/views/article/search/index'),
-        meta: { title: '搜索文章', icon: 'tree', roles: ['admin'] }
+        meta: { title: '搜索文章', icon: 'tree' }
       },
       {
         path: 'new',
         name: 'ArticleNew',
         component: () => import('@/views/article/new/index'),
-        meta: { title: '新建文章', icon: 'table' }
+        meta: { title: '新建文章', icon: 'table', roles: ['admin'] }
       },
       {
         path: 'update/:id',
@@ -104,7 +104,7 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'CommentSearch',
         component: () => import('@/views/comment/search/index'),
-        meta: { title: '搜索评论', icon: 'tree', roles: ['admin'] }
+        meta: { title: '搜索评论', icon: 'tree' }
       },
       {
         path: 'update',
@@ -119,7 +119,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/authorization/user',
     name: 'Authorization',
-    meta: { title: '授权', icon: 'example' },
+    meta: { title: '授权', icon: 'example', roles: ['admin'] },
     children: [
       {
         path: 'user',
@@ -131,7 +131,7 @@ export const asyncRouterMap = [
         path: 'role',
         name: 'Role',
         component: () => import('@/views/authorization/role/index'),
-        meta: { title: '角色管理', icon: 'table' }
+        meta: { title: '角色管理', icon: 'table', roles: ['admin'] }
       },
       {
         path: 'permission',
@@ -152,7 +152,7 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'ResumeSearch',
         component: () => import('@/views/resume/search/index'),
-        meta: { title: '搜索简历', icon: 'tree', roles: ['admin'] }
+        meta: { title: '搜索简历', icon: 'tree' }
       },
       {
         path: 'new',
@@ -164,7 +164,7 @@ export const asyncRouterMap = [
         path: 'update',
         name: 'ResumeUpdate',
         component: () => import('@/views/resume/update/index'),
-        meta: { title: '修改简历', icon: 'tree', roles: ['admin'] }
+        meta: { title: '修改简历', icon: 'tree' }
       },
       {
         path: 'publish',
