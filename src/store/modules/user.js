@@ -41,13 +41,14 @@ const user = {
         })
       })
     },
-
+    // 登录 and 验证密码
     LoginBk({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         getJwtToken(userInfo).then(response => {
           const data = response.data
           setToken(data)
           commit('SET_TOKEN', data.access_token)
+          commit('SET_NAME', userInfo.username)
           resolve()
         }).catch(error => {
           reject(error)
@@ -74,17 +75,17 @@ const user = {
       })
     },
 
-    GetUserInfo({ commit, state }) {
+    GetUserInfo({ commit }, user) {
       return new Promise((resolve, reject) => {
         const userInfo = UserQueryInfo
-        userInfo.code = 'admin'
-        userInfo.name = 'zn1'
+        userInfo.name = user
         userInfo.page = 1
         userInfo.limit = 1
         getAllUsers(userInfo).then(response => {
           // const data = response.data// 验证返回的roles是否是一个非空数组
-          commit('SET_ROLES', ['admin'])
-          commit('SET_NAME', 'admin')
+          const data = response.data
+          commit('SET_ROLES', data.content[0].roles.map(role => role.code))
+          commit('SET_NAME', data.name)
           commit('SET_AVATAR', '')
           resolve(response)
         }).catch(error => {
