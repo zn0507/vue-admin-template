@@ -19,6 +19,7 @@ import Layout from '../views/layout/Layout'
 * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    permission: true or false     custom field
   }
 **/
 export const constantRouterMap = [
@@ -33,7 +34,7 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
       name: 'Dashboard',
-      meta: { title: '仪表盘', icon: 'dashboard' }
+      meta: { title: '仪表盘', icon: 'dashboard', permission: true }
     }]
   }
 ]
@@ -50,19 +51,19 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'ArticleSearch',
         component: () => import('@/views/article/search/index'),
-        meta: { title: '搜索文章', icon: 'tree' }
+        meta: { title: '搜索文章', icon: 'tree', permission: true }
       },
       {
         path: 'new',
         name: 'ArticleNew',
         component: () => import('@/views/article/new/index'),
-        meta: { title: '新建文章', icon: 'table', roles: ['admin'] }
+        meta: { title: '新建文章', icon: 'table', roles: ['admin'], permission: true }
       },
       {
         path: 'update/:id',
         name: 'ArticleUpdate',
         component: () => import('@/views/article/update/index'),
-        meta: { title: '修改文章', icon: 'tree', roles: ['admin'] }
+        meta: { title: '修改文章', icon: 'tree', roles: ['admin'], permission: true }
       }
     ]
   },
@@ -77,7 +78,7 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'CategorySearch',
         component: () => import('@/views/category/search/index'),
-        meta: { title: '搜索类别', icon: 'tree', roles: ['admin'] }
+        meta: { title: '搜索类别', icon: 'tree', roles: ['admin'], permission: true }
       }
       // {
       //   path: 'new',
@@ -104,13 +105,13 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'CommentSearch',
         component: () => import('@/views/comment/search/index'),
-        meta: { title: '搜索评论', icon: 'tree' }
+        meta: { title: '搜索评论', icon: 'tree', permission: true }
       },
       {
         path: 'update',
         name: 'CommentUpdate',
         component: () => import('@/views/comment/update/index'),
-        meta: { title: '回复评论', icon: 'tree', roles: ['admin'] }
+        meta: { title: '回复评论', icon: 'tree', roles: ['admin'], permission: true }
       }
     ]
   },
@@ -119,25 +120,25 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/authorization/user',
     name: 'Authorization',
-    meta: { title: '授权', icon: 'example', roles: ['admin'] },
+    meta: { title: '授权', icon: 'example', roles: ['admin'], permission: true },
     children: [
       {
         path: 'user',
         name: 'User',
         component: () => import('@/views/authorization/user/index'),
-        meta: { title: '用户管理', icon: 'tree', roles: ['admin'] }
+        meta: { title: '用户管理', icon: 'tree', roles: ['admin'], permission: true }
       },
       {
         path: 'role',
         name: 'Role',
         component: () => import('@/views/authorization/role/index'),
-        meta: { title: '角色管理', icon: 'table', roles: ['admin'] }
+        meta: { title: '角色管理', icon: 'table', roles: ['admin'], permission: true }
       },
       {
         path: 'permission',
         name: 'Permission',
         component: () => import('@/views/authorization/permission/index'),
-        meta: { title: '权限管理', icon: 'tree', roles: ['admin'] }
+        meta: { title: '权限管理', icon: 'tree', roles: ['admin'], permission: true }
       }
     ]
   },
@@ -152,25 +153,25 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'ResumeSearch',
         component: () => import('@/views/resume/search/index'),
-        meta: { title: '搜索简历', icon: 'tree' }
+        meta: { title: '搜索简历', icon: 'tree', permission: true }
       },
       {
         path: 'new',
         name: 'ResumeNew',
         component: () => import('@/views/resume/new/index'),
-        meta: { title: '新建简历', icon: 'table' }
+        meta: { title: '新建简历', icon: 'table', permission: true }
       },
       {
         path: 'update',
         name: 'ResumeUpdate',
         component: () => import('@/views/resume/update/index'),
-        meta: { title: '修改简历', icon: 'tree' }
+        meta: { title: '修改简历', icon: 'tree', permission: true }
       },
       {
         path: 'publish',
         name: 'ResumePublish',
         component: () => import('@/views/resume/publish/index'),
-        meta: { title: '发布简历', icon: 'tree', roles: ['admin'] }
+        meta: { title: '发布简历', icon: 'tree', roles: ['admin'], permission: true }
       }
     ]
   },
@@ -185,13 +186,13 @@ export const asyncRouterMap = [
         path: 'link',
         name: 'SystemLink',
         component: () => import('@/views/system/link/index'),
-        meta: { title: '系统链接', icon: 'tree', roles: ['admin'] }
+        meta: { title: '系统链接', icon: 'tree', roles: ['admin'], permission: true }
       },
       {
         path: 'others',
         name: 'SystemOthers',
         component: () => import('@/views/system/others/index'),
-        meta: { title: '其他设置', icon: 'tree', roles: ['admin'] }
+        meta: { title: '其他设置', icon: 'tree', roles: ['admin'], permission: true }
       }
     ]
   },
