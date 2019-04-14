@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { getJwtToken } from '@/api/auth'
 export default {
   name: 'Link',
   data() {
@@ -18,12 +17,6 @@ export default {
     }
   },
   methods: {
-    getToken() {
-      getJwtToken(this.auth)
-        .then(res => {
-          console.log(res)
-        })
-    }
   }
 }
 </script>
