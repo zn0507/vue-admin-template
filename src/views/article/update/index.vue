@@ -130,6 +130,7 @@ import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { getAllArticle, getAllCategory, updateArticle, PicturePrefix, getAllPicture } from '@/api/article'
+import store from '@/store'
 
 export default {
   name: 'ArticleUpdate',
@@ -173,7 +174,7 @@ export default {
         modificationDate: '',
         articleCategory: {},
         createUser: '',
-        lastModifyUser: ''
+        lastModifyUser: store.getters.code
       },
       query: {
         page: 1,

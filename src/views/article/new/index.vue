@@ -100,6 +100,7 @@ import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { updateArticle, getAllCategory } from '@/api/article'
+import store from '@/store'
 export default {
   name: 'ArticleNew',
   components: { MarkdownEditor },
@@ -123,8 +124,8 @@ export default {
           'createDate': '',
           'modificationDate': '',
           'status': 'publish',
-          'createUser': '',
-          'lastModifyUser': '',
+          'createUser': store.getters.code,
+          'lastModifyUser': store.getters.code,
           'content': '',
           'rank': 0
         },
@@ -138,8 +139,8 @@ export default {
         createDate: '',
         modificationDate: '',
         articleCategory: { 'id': '' },
-        createUser: '',
-        lastModifyUser: '',
+        createUser: store.getters.code,
+        lastModifyUser: store.getters.code,
         menu: ''
       },
       pQuery: {

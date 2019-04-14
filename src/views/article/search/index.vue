@@ -135,6 +135,7 @@
 <script>
 import waves from '@/directive/waves'
 import { updateArticle, getAllArticle, getAllCategory } from '@/api/article'
+import store from '@/store'
 export default {
   name: 'ArticleSearch',
   directives: {
@@ -191,7 +192,7 @@ export default {
         name: '',
         status: '',
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: '',
         articleCategory: { 'id': '' },

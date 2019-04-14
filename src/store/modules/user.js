@@ -5,6 +5,8 @@ import { getAllUsers, UserQueryInfo } from '@/api/user'
 
 const user = {
   state: {
+    id: '',
+    code: '',
     token: getToken(),
     name: '',
     avatar: '',
@@ -23,6 +25,12 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_CODE: (state, code) => {
+      state.code = code
+    },
+    SET_ID: (state, id) => {
+      state.id = id
     }
   },
 
@@ -83,10 +91,12 @@ const user = {
         userInfo.limit = 1
         getAllUsers(userInfo).then(response => {
           // const data = response.data// 验证返回的roles是否是一个非空数组
-          const data = response.data
-          commit('SET_ROLES', data.content[0].roles.map(role => role.code))
+          const data = response.data.content[0]
+          commit('SET_ROLES', data.roles.map(role => role.code))
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', '')
+          commit('SET_CODE', data.code)
+          commit('SET_ID', data.id)
           resolve(response)
         }).catch(error => {
           reject(error)

@@ -125,6 +125,7 @@
 <script>
 import waves from '@/directive/waves'
 import { getAllPermissionEnums, getAllPermissions, updatePermission } from '@/api/user'
+import store from '@/store'
 export default {
   name: 'Permission',
   directives: {
@@ -171,7 +172,7 @@ export default {
         status: '',
         permission: '',
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       },
@@ -224,8 +225,8 @@ export default {
       this.isShow = true
       this.permissionTemp.createDate = new Date()
       this.permissionTemp.modificationDate = new Date()
-      // this.permissionTemp.createUser
-      // this.permissionTemp.lastModifyUser
+      this.permissionTemp.createUser = store.getters.code
+      this.permissionTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
@@ -238,7 +239,7 @@ export default {
     handleModifyStatus(row, status) {
       row.status = status
       // row.modificationDate = new Date()
-      // row.lastModifyUser
+      row.lastModifyUser = store.getters.code
       this.savePermission(row)
     },
     updateData() {
@@ -264,7 +265,7 @@ export default {
         status: '',
         permission: '',
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       }

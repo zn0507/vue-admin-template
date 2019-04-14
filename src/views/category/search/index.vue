@@ -123,6 +123,7 @@
 <script>
 import waves from '@/directive/waves'
 import { getAllCategory, updateCategory } from '@/api/article'
+import store from '@/store'
 export default {
   name: 'ArticleCategory',
   directives: {
@@ -210,8 +211,8 @@ export default {
       this.isShow = true
       this.articleCategoryTemp.createDate = new Date()
       this.articleCategoryTemp.modificationDate = new Date()
-      // this.permissionTemp.createUser
-      // this.permissionTemp.lastModifyUser
+      this.permissionTemp.createUser = store.getters.code
+      this.permissionTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
@@ -224,10 +225,11 @@ export default {
     handleModifyStatus(row, status) {
       row.status = status
       // row.modificationDate = new Date()
-      // row.lastModifyUser
+      row.lastModifyUser = store.getters.code
       this.saveCategory(row)
     },
     updateData() {
+      this.permissionTemp.lastModifyUser = store.getters.code
       this.saveCategory(this.articleCategoryTemp)
       this.isShow = false
     },

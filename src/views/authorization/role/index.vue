@@ -125,6 +125,7 @@
 <script>
 import waves from '@/directive/waves'
 import { getAllRoles, getAllPermissions, updateRole } from '@/api/user'
+import store from '@/store'
 export default {
   name: 'Role',
   directives: {
@@ -179,7 +180,7 @@ export default {
         status: '',
         permissions: [],
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       },
@@ -231,8 +232,8 @@ export default {
       this.isShow = true
       this.roleTemp.createDate = new Date()
       this.roleTemp.modificationDate = new Date()
-      // this.permissionTemp.createUser
-      // this.permissionTemp.lastModifyUser
+      this.permissionTemp.createUser = store.getters.code
+      this.permissionTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
@@ -249,7 +250,7 @@ export default {
     handleModifyStatus(row, status) {
       row.status = status
       // row.modificationDate = new Date()
-      // row.lastModifyUser
+      row.lastModifyUser = store.getters.code
       this.saveRole(row)
     },
     updateData() {
@@ -258,6 +259,7 @@ export default {
       this.roleTemp.permissions.forEach(permission => {
         role.permissions.push({ 'id': permission })
       })
+      role.lastModifyUser = store.getters.code
       this.saveRole(role)
       this.isShow = false
     },
@@ -276,7 +278,7 @@ export default {
         status: '',
         permissions: [],
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       }

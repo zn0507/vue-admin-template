@@ -128,6 +128,7 @@
 <script>
 import waves from '@/directive/waves'
 import { getAllRoles, getAllUsers, updateUser } from '@/api/user'
+import store from '@/store'
 export default {
   name: 'User',
   directives: {
@@ -182,7 +183,7 @@ export default {
         status: '',
         roles: [],
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: '',
         password: ''
@@ -235,8 +236,8 @@ export default {
       this.isShow = true
       this.userTemp.createDate = new Date()
       this.userTemp.modificationDate = new Date()
-      // this.permissionTemp.createUser
-      // this.permissionTemp.lastModifyUser
+      this.permissionTemp.createUser = store.getters.code
+      this.permissionTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
@@ -253,7 +254,7 @@ export default {
     handleModifyStatus(row, status) {
       row.status = status
       // row.modificationDate = new Date()
-      // row.lastModifyUser
+      row.lastModifyUser = store.getters.code
       this.saveUser(row)
     },
     updateData() {
@@ -262,6 +263,7 @@ export default {
       this.userTemp.roles.forEach(role => {
         user.roles.push({ 'id': role })
       })
+      user.lastModifyUser = store.getters.code
       this.saveUser(user)
       this.isShow = false
     },
@@ -280,7 +282,7 @@ export default {
         status: '',
         roles: [],
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: '',
         password: ''
