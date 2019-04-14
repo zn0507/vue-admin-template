@@ -76,7 +76,7 @@ export function getAllUsers(query) {
 
 export function getUserById(id) {
   return request({
-    url: '/user/list',
+    url: UserPrefix + '/user/list',
     method: 'get',
     params: { id }
   })
@@ -84,7 +84,7 @@ export function getUserById(id) {
 
 export function updateUser(data) {
   return request({
-    url: '/user',
+    url: UserPrefix + '/user',
     method: 'post',
     data
   })

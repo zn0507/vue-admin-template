@@ -169,7 +169,7 @@ export default {
         status: '',
         rank: 0,
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       },
@@ -211,8 +211,8 @@ export default {
       this.isShow = true
       this.articleCategoryTemp.createDate = new Date()
       this.articleCategoryTemp.modificationDate = new Date()
-      this.permissionTemp.createUser = store.getters.code
-      this.permissionTemp.lastModifyUser = store.getters.code
+      this.articleCategoryTemp.createUser = store.getters.code
+      this.articleCategoryTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
@@ -229,7 +229,7 @@ export default {
       this.saveCategory(row)
     },
     updateData() {
-      this.permissionTemp.lastModifyUser = store.getters.code
+      this.articleCategoryTemp.lastModifyUser = store.getters.code
       this.saveCategory(this.articleCategoryTemp)
       this.isShow = false
     },
@@ -252,7 +252,7 @@ export default {
         status: '',
         rank: 0,
         createUser: '',
-        lastModifyUser: '',
+        lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: ''
       }

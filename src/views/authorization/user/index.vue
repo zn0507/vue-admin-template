@@ -236,8 +236,8 @@ export default {
       this.isShow = true
       this.userTemp.createDate = new Date()
       this.userTemp.modificationDate = new Date()
-      this.permissionTemp.createUser = store.getters.code
-      this.permissionTemp.lastModifyUser = store.getters.code
+      this.userTemp.createUser = store.getters.code
+      this.userTemp.lastModifyUser = store.getters.code
     },
     handleUpdate(row) {
       this.isNew = false
