@@ -41,7 +41,7 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.permission')" width="100" align="center">
+      <el-table-column :label="$t('table.role')" width="100" align="center">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.roles.length }}</el-tag>
         </template>
