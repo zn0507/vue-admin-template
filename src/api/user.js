@@ -8,7 +8,9 @@ export const UserQueryInfo = {
   id: '',
   code: '',
   name: '',
-  status: 'publish'
+  status: 'publish',
+  orderDesc: [],
+  orderAsc: []
 }
 
 export function getAllPermissionEnums() {

@@ -8,7 +8,9 @@ export const AuthQueryInfo = {
   id: '',
   code: '',
   name: '',
-  status: 'publish'
+  status: 'publish',
+  orderDesc: [],
+  orderAsc: []
 }
 
 export function get(query) {
