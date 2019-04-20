@@ -184,7 +184,7 @@ export default {
         status: 'publish',
         id: '',
         title: '',
-        category: '',
+        categoryId: '',
         createDate: ''
       },
       pictureList: [],

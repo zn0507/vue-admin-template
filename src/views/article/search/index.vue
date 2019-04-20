@@ -175,7 +175,7 @@ export default {
         status: '',
         id: '',
         title: '',
-        category: '',
+        categoryId: '',
         createDate: ''
       },
       pQuery: {
