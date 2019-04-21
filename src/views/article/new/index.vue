@@ -22,7 +22,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.articleCategory.id" :placeholder="$t('table.category')" clearable style="width: 200px" class="filter-item">
+            <el-select v-model="form.category.id" :placeholder="$t('table.category')" clearable style="width: 200px" class="filter-item">
               <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
@@ -118,7 +118,7 @@ export default {
       form: {
         title: '',
         content: '',
-        articleSummary: {
+        summary: {
           'code': '',
           'name': '',
           'createDate': '',
@@ -138,7 +138,7 @@ export default {
         rank: 0,
         createDate: '',
         modificationDate: '',
-        articleCategory: { 'id': '' },
+        category: { 'id': '' },
         createUser: store.getters.code,
         lastModifyUser: store.getters.code,
         menu: ''
@@ -208,10 +208,10 @@ export default {
       article.createDate = new Date()
       article.createUser = '1'
       article.lastModifyUser = '1'
-      article.articleSummary.modificationDate = new Date()
-      article.articleSummary.createDate = new Date()
-      article.articleSummary.createUser = '1'
-      article.articleSummary.lastModifyUser = '1'
+      article.summary.modificationDate = new Date()
+      article.summary.createDate = new Date()
+      article.summary.createUser = '1'
+      article.summary.lastModifyUser = '1'
       article.menu = '"前言""搭建""编写""运营""结束"'
       this.saveArticle(article)
     },

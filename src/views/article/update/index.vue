@@ -43,7 +43,7 @@
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.articleCategory" :placeholder="$t('table.category')" value-key="id">
+            <el-select v-model="form.category" :placeholder="$t('table.category')" value-key="id">
               <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
@@ -162,7 +162,7 @@ export default {
       form: {
         title: '',
         content: '',
-        articleSummary: {},
+        summary: {},
         status: '',
         articleType: '',
         link: '',
@@ -172,7 +172,7 @@ export default {
         rank: 0,
         createDate: '',
         modificationDate: '',
-        articleCategory: {},
+        category: {},
         createUser: '',
         lastModifyUser: store.getters.code
       },
@@ -233,7 +233,7 @@ export default {
       getAllArticle(query)
         .then(res => {
           this.form = res.data.content[0]
-          this.form.articleCategory = this.form.articleCategory.id
+          this.form.category = this.form.category.id
           this.listLoading = false
         })
     },
@@ -281,13 +281,13 @@ export default {
     onSubmit() {
       const article = Object.assign({}, this.form)
       article.menu = ''
-      article.articleCategory = { 'id': this.form.articleCategory }
+      article.category = { 'id': this.form.category }
       this.saveArticle(article)
     },
     onPublish() {
       const article = Object.assign({}, this.form)
       article.menu = ''
-      article.articleCategory = { 'id': this.form.articleCategory }
+      article.category = { 'id': this.form.category }
       article.status = 'publish'
       this.saveArticle(article)
     },
@@ -295,7 +295,7 @@ export default {
       import('showdown').then(showdown => {
         const converter = new showdown.Converter()
         this.form.content = converter.makeHtml(this.form.content)
-        this.form.articleSummary.content = converter.makeHtml(this.form.articleSummary.content)
+        this.form.summary.content = converter.makeHtml(this.form.articleSummary.content)
       })
     },
     changeArticleType(val) {

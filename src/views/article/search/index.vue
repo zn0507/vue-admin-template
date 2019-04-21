@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column label="类别" width="150px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.articleCategory.name }}</span>
+          <span>{{ scope.row.category.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="100" align="center">
@@ -102,7 +102,7 @@
           <el-input v-model="articleTemp.title" :disabled="true" style="width: 300px"/>
         </el-form-item>
         <el-form-item :label="$t('table.category')">
-          <el-select v-model="articleTemp.articleCategory.id" :placeholder="$t('table.category')" clearable style="width: 200px">
+          <el-select v-model="articleTemp.category.id" :placeholder="$t('table.category')" clearable style="width: 200px">
             <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -195,7 +195,7 @@ export default {
         lastModifyUser: store.getters.code,
         createDate: '',
         modificationDate: '',
-        articleCategory: { 'id': '' },
+        category: { 'id': '' },
         title: '',
         readings: 0,
         likes: 0,
