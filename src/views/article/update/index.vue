@@ -24,7 +24,7 @@
         <!--</el-col>-->
         <el-col :span="3">
           <el-form-item :label="$t('table.summaryRank')" label-width="70px" >
-            <el-input-number v-model="form.articleSummary.rank" :min="0" controls-position="right" style="width: 120px"/>
+            <el-input-number v-model="form.summary.rank" :min="0" controls-position="right" style="width: 120px"/>
           </el-form-item>
         </el-col>
         <el-col :span="3">
@@ -74,7 +74,7 @@
       <el-row :gutter="20">
         <el-col :span="18">
           <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.articleSummary.content" :z-index="20" style="height: auto"/>
+          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary.content" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
