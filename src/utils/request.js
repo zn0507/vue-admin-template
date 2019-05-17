@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message, MessageBox } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
@@ -32,24 +32,47 @@ service.interceptors.response.use(
   response => {
     /**
      * code为非20000是抛错 可结合自己业务进行修改
+     *
+     * response:
+     * Error: Request failed with status code 500
+     at createError (createError.js:16)
+     at settle (settle.js:18)
+     at MockXMLHttpRequest.handleLoad [as onreadystatechange] (xhr.js:77)
+     at MockXMLHttpRequest.dispatchEvent (mock.js:8472)
+     at XMLHttpRequest.handle (mock.js:8300)
      */
-    const res = response.data
-    console.log(response)
-    if (res.code !== 20000) {
-      Message({
-        message: res.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      if (res.code === 401) {
+    const flag = true
+    if (flag) {
+      if (response.toString().includes('500')) {
+        Message({
+          message: '请求失败',
+          type: 'error',
+          duration: 3 * 1000
+        })
+      }
+      if (response.toString().includes('404')) {
+        Message({
+          message: '没有服务',
+          type: 'error',
+          duration: 3 * 1000
+        })
+      }
+      if (response.toString().includes('400')) {
+        Message({
+          message: '错误请求',
+          type: 'error',
+          duration: 3 * 1000
+        })
+      }
+      if (response.toString().includes('401')) {
         Message({
           message: '认证失败！',
           type: 'error',
-          duration: 5 * 1000
+          duration: 3 * 1000
         })
       }
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      /*      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         MessageBox.confirm(
           '你已被登出，可以取消继续留在该页面，或者重新登录',
           '确定登出',
@@ -63,7 +86,7 @@ service.interceptors.response.use(
             location.reload() // 为了重新实例化vue-router对象 避免bug
           })
         })
-      }
+      }*/
       return Promise.reject('error')
     } else {
       return response.data
