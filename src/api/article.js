@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+// import { delNullQueryInfo } from '@/utils/index'
 export const ArticlePrefix = '/api/artSer'
 export const PicturePrefix = 'http://localhost:81/article/'
 
@@ -15,6 +15,7 @@ export const ArtQueryInfo = {
 }
 
 export function getAllArticle(query) {
+  // delNullQueryInfo(query)
   return request({
     url: ArticlePrefix + '/article',
     method: 'get',
@@ -39,6 +40,7 @@ export function updateArticle(data) {
 }
 
 export function getAllCategory(query) {
+  // delNullQueryInfo(query)
   return request({
     url: ArticlePrefix + '/articleCategory',
     method: 'get',
@@ -63,8 +65,9 @@ export function updateCategory(data) {
 }
 
 export function getAllPicture(query) {
-  return ArticlePrefix + request({
-    url: '/articlePicture',
+  // delNullQueryInfo(query)
+  return request({
+    url: ArticlePrefix + '/articlePicture',
     method: 'get',
     params: query
   })

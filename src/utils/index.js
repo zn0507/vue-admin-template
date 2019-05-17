@@ -83,3 +83,16 @@ export function param2Obj(url) {
     '"}'
   )
 }
+
+export function delNullQueryInfo(queryInfo) {
+  const del = []
+  for (const i in queryInfo) {
+    if (queryInfo[i] === null || queryInfo[i] === '' || (Array.isArray(queryInfo[i]) && queryInfo[i].length === 0)) {
+      del.push(i)
+    }
+  }
+
+  del.forEach(name => {
+    delete queryInfo[name]
+  })
+}
