@@ -29,7 +29,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.articleType" :placeholder="$t('table.type')" clearable>
+            <el-select v-model="form.type" :placeholder="$t('table.type')" clearable>
               <el-option label="原创" value="original"/>
               <el-option label="转载" value="reprinted"/>
             </el-select>
@@ -52,8 +52,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="18">
-          <markdown-editor v-show="isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-          <markdown-editor v-show="!isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary.content" :z-index="20" style="height: auto"/>
+          <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
+          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary.content" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
@@ -139,7 +139,7 @@ export default {
           'rank': 0
         },
         status: '',
-        articleType: '',
+        type: '',
         link: '',
         likes: 0,
         readings: 0,
@@ -176,7 +176,7 @@ export default {
       },
       deep: true
     },
-    'form.articleType'(val) {
+    'form.type'(val) {
       this.isShowLink = val === 'reprinted'
     }
   },
