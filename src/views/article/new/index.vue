@@ -40,6 +40,15 @@
             <el-input v-model="form.link" :placeholder="$t('table.link')"/>
           </el-form-item>
         </el-col>
+        <el-col :span="2">
+          <el-popover
+            placement="bottom"
+            width="250"
+            trigger="click"
+            content="<div class=&quot;scroll_title&quot;></div>">
+            <el-button slot="reference">文章目录css</el-button>
+          </el-popover>
+        </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="18">
