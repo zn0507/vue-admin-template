@@ -96,7 +96,8 @@
                   :on-success="loadSuccess"
                   :on-error="loadError"
                   :auto-upload="false"
-                  action="/picture/upload"
+                  :headers="headers"
+                  action="/api/artSer/picture/upload"
                   list-type="picture"
                 >
                   <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
@@ -137,6 +138,7 @@ import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { getAllArticle, getAllCategory, updateArticle, PicturePrefix, getAllPicture } from '@/api/article'
 import store from '@/store'
+import { getToken } from '@/utils/auth'
 
 export default {
   name: 'ArticleUpdate',
@@ -154,7 +156,8 @@ export default {
       isShowContent: false,
       isShowLink: false,
       pictureProps: {
-        articleId: ''
+        articleId: '',
+        user: store.getters.code
       },
       picQuery: {
         page: 1,
@@ -211,7 +214,10 @@ export default {
         code: 'reprinted',
         name: '转载'
       }],
-      pictures: []
+      pictures: [],
+      headers: {
+        'Authorization': getToken()
+      }
     }
   },
   beforeMount() {

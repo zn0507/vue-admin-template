@@ -69,7 +69,8 @@
                   :on-success="loadSuccess"
                   :on-error="loadError"
                   :auto-upload="false"
-                  action="/picture/upload"
+                  :headers="headers"
+                  action="/api/artSer/picture/upload"
                   list-type="picture"
                 >
                   <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
@@ -110,6 +111,7 @@ import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import { updateArticle, getAllCategory } from '@/api/article'
 import store from '@/store'
+import { getToken } from '@/utils/auth'
 export default {
   name: 'ArticleNew',
   components: { MarkdownEditor },
@@ -165,7 +167,10 @@ export default {
       pictureProps: {
         articleId: ''
       },
-      html: ''
+      html: '',
+      headers: {
+        'Authorization': getToken()
+      }
     }
   },
   watch: {
