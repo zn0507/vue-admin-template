@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" label-width="50px" label-position="left">
       <el-row :gutter="10">
         <el-col :span="12">
-          <el-form-item :label="$t('table.title')">
+          <el-form-item label="标题">
             <el-input v-model="form.title"/>
           </el-form-item>
         </el-col>
@@ -50,7 +50,7 @@
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.articleType" placeholder="类型" value-key="code" @change="changeArticleType">
+            <el-select v-model="form.type" placeholder="类型" value-key="code" @change="changeArticleType">
               <el-option v-for="item in type" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
           </el-form-item>
@@ -173,7 +173,7 @@ export default {
         content: '',
         summary: {},
         status: '',
-        articleType: '',
+        type: '',
         link: '',
         likes: 0,
         readings: 0,
@@ -184,13 +184,14 @@ export default {
         category: {},
         createUser: '',
         lastModifyUser: store.getters.code
+        // version: 0
       },
       query: {
         page: 1,
         limit: 10,
         code: '',
         name: '',
-        status: 'publish',
+        // status: 'publish',
         id: '',
         title: '',
         categoryId: '',
@@ -227,7 +228,7 @@ export default {
       })
     this.query.id = this.$route.params.id
     this.getArticle(this.query)
-    this.isShowLink = this.form.articleType === 'original'
+    this.isShowLink = this.form.type === 'original'
   },
   methods: {
     getPictures(query) {
@@ -307,7 +308,7 @@ export default {
       import('showdown').then(showdown => {
         const converter = new showdown.Converter()
         this.form.content = converter.makeHtml(this.form.content)
-        this.form.summary.content = converter.makeHtml(this.form.articleSummary.content)
+        this.form.summary.content = converter.makeHtml(this.form.summary.content)
       })
     },
     changeArticleType(val) {
