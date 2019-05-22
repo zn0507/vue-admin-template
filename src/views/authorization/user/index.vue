@@ -98,7 +98,7 @@
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="userTemp" label-position="center" label-width="70px" style="width: 600px">
         <el-form-item :label="$t('table.code')" prop="code">
-          <el-input v-model="userTemp.code" :disabled="isNew !== true"/>
+          <el-input v-model="userTemp.code" :disabled="true"/>
         </el-form-item>
         <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="userTemp.name" />
