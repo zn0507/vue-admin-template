@@ -45,7 +45,7 @@
             placement="bottom"
             width="250"
             trigger="click"
-            content="<div class=&quot;scroll_title&quot;></div>">
+            content="<div class=&quot;scroll_title&quot;></div> <img src=&quot;&quot; height=&quot;300&quot; width=&quot;700&quot; >">
             <el-button slot="reference">文章目录css</el-button>
           </el-popover>
         </el-col>
