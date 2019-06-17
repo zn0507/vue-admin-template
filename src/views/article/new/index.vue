@@ -22,7 +22,7 @@
         </el-col>
         <el-col :span="3">
           <el-form-item>
-            <el-select v-model="form.category.id" :placeholder="$t('table.category')" clearable style="width: 200px" class="filter-item">
+            <el-select v-model="form.category.id" :placeholder="$t('table.category')" filterable clearable style="width: 200px" class="filter-item">
               <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>

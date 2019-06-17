@@ -43,7 +43,7 @@
         </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
-            <el-select v-model="form.category" :placeholder="$t('table.category')" value-key="id">
+            <el-select v-model="form.category" :placeholder="$t('table.category')" filterable clearable value-key="id">
               <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
           </el-form-item>
