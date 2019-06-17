@@ -3,7 +3,7 @@
     <div class="article-filter-container">
       <el-input v-model="listQuery.code" placeholder="文章编号" style="width: 200px" class="filter-item"/>
       <el-input v-model="listQuery.title" placeholder="文章标题" style="width: 400px" class="filter-item"/>
-      <el-select v-model="listQuery.category" placeholder="文章类别" clearable filterable style="width: 200px" class="filter-item">
+      <el-select v-model="listQuery.categoryId" placeholder="文章类别" clearable filterable style="width: 200px" class="filter-item">
         <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
       </el-select>
       <el-date-picker v-model="listQuery.createDate" type="date" placeholder="创建日期" style="width: 150px"/>
