@@ -36,7 +36,8 @@
         </el-col>
       </el-row>
       <el-row>
-        <div id="myChart" :style="{width: '300px', height: '300px'}"/>
+        <!--          <div id="container" :style="{width: '1500px', height: '500px'}"/>-->
+        <div id="myChart" :style="{width: '1500px', height: '500px', margin: '50px 0 0 0'}"/>
       </el-row>
     </div>
   </div>
@@ -45,9 +46,18 @@
 <script>
 import { mapGetters } from 'vuex'
 const echarts = require('echarts/lib/echarts')
-require('echarts/lib/chart/bar')
+require('echarts/lib/chart/map')
+require('echarts/lib/chart/line')
+require('echarts/lib/component/axis')
 require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
+require('echarts/lib/component/dataZoom')
+require('echarts/lib/component/visualMap')
+require('echarts/map/js/china')
+require('echarts/map/js/world')
+require('echarts/extension/dataTool')
+require('echarts/extension/bmap/bmap')
+
+
 export default {
   name: 'Dashboard',
   computed: {
