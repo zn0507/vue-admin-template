@@ -21,20 +21,26 @@
         <el-col :span="4">
           <el-row>
             <el-card shadow="hover">
-              地域图
+              在线平均时长
+              <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
             </el-card>
           </el-row>
           <el-row>
             <el-card shadow="hover">
-              折线图
+              在线平均时长
+              <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
             </el-card>
           </el-row>
         </el-col>
         <el-col :span="4">
           <el-row>
             <el-card shadow="hover">
-              在线平均时长
-              <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
+              地域图
+            </el-card>
+          </el-row>
+          <el-row>
+            <el-card shadow="hover">
+              折线图
             </el-card>
           </el-row>
         </el-col>
