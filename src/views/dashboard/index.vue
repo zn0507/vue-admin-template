@@ -1,38 +1,42 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <!--    <div class="dashboard-text">name:{{ name }}</div>-->
+    <!--    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>-->
     <div>
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-card shadow="hover">
-            分时访问量
-          </el-card>
+          <el-row>
+            <el-card shadow="hover">
+              当日访问量
+              <count-to :start-val="0" :end-val="102400" :duration="3000" class="card-panel-num"/>
+            </el-card>
+          </el-row>
+          <el-row>
+            <el-card shadow="hover">
+              累计访问量
+              <count-to :start-val="0" :end-val="102400" :duration="3000" class="card-panel-num"/>
+            </el-card>
+          </el-row>
         </el-col>
         <el-col :span="4">
-          <el-card shadow="hover">
-            当日访问量
-          </el-card>
+          <el-row>
+            <el-card shadow="hover">
+              在线平均时长
+              <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
+            </el-card>
+          </el-row>
         </el-col>
         <el-col :span="4">
-          <el-card shadow="hover">
-            累计访问量
-          </el-card>
-        </el-col>
-        <el-col :span="4">
-          <el-card shadow="hover">
-            在线平均时长
-          </el-card>
-        </el-col>
-        <el-col :span="4">
-          <el-card shadow="hover">
-            地域图
-          </el-card>
-        </el-col>
-        <el-col :span="4">
-          <el-card shadow="hover">
-            累计访问量
-          </el-card>
+          <el-row>
+            <el-card shadow="hover">
+              地域图
+            </el-card>
+          </el-row>
+          <el-row>
+            <el-card shadow="hover">
+              折线图
+            </el-card>
+          </el-row>
         </el-col>
       </el-row>
       <el-row>
@@ -56,10 +60,12 @@ require('echarts/map/js/china')
 require('echarts/map/js/world')
 require('echarts/extension/dataTool')
 require('echarts/extension/bmap/bmap')
-
-
+import CountTo from 'vue-count-to'
 export default {
   name: 'Dashboard',
+  components: {
+    CountTo
+  },
   computed: {
     ...mapGetters([
       'name',
@@ -744,13 +750,30 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
+  .el-row {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
-  &-text {
+
+  .dashboard {
+    &-container {
+      margin: 30px;
+    }
+
+    &-text {
+      font-size: 30px;
+      line-height: 46px;
+    }
+  }
+  .card-panel-num {
     font-size: 30px;
-    line-height: 46px;
+    color: #23549d;
+    margin-left: 30px;
   }
-}
+  .el-card__body {
+    padding: 10px;
+  }
 </style>
