@@ -43,9 +43,15 @@
             </el-select>
           </el-row>
           <el-row>
-            <el-card shadow="hover">
-              折线图
-            </el-card>
+            <el-date-picker
+              :picker-options="dateOptions"
+              v-model="date"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"/>
           </el-row>
         </el-col>
       </el-row>
@@ -75,6 +81,63 @@ export default {
   name: 'Dashboard',
   components: {
     CountTo
+  },
+  data() {
+    return {
+      dateOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近六个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一年',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 365)
+              picker.$emit('pick', [start, end])
+            }
+          }]
+      },
+      date: [new Date(), new Date()],
+      dataTypes: [{
+        value: 'line',
+        label: '折线图'
+      }, {
+        value: 'map',
+        label: '地域图'
+      }],
+      dataType: 'line'
+    }
   },
   computed: {
     ...mapGetters([
