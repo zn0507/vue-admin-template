@@ -32,11 +32,15 @@
             </el-card>
           </el-row>
         </el-col>
-        <el-col :span="4">
-          <el-row>
-            <el-card shadow="hover">
-              地域图
-            </el-card>
+        <el-col :span="5">
+          <el-row class="type-select">
+            <el-select v-model="dataType">
+              <el-option
+                v-for="item in dataTypes"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
           </el-row>
           <el-row>
             <el-card shadow="hover">
@@ -781,5 +785,8 @@ export default {
   }
   .el-card__body {
     padding: 10px;
+  }
+  .type-select {
+    margin-bottom: 56px;
   }
 </style>
