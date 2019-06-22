@@ -139,11 +139,17 @@ export default {
       dataType: 'line'
     }
   },
+
   computed: {
     ...mapGetters([
       'name',
       'roles'
     ])
+  },
+  watch: {
+    dataType(newType, oldType) {
+      // change echarts
+    }
   },
   mounted() {
     this.drawLine()
