@@ -21,13 +21,13 @@
         <el-col :span="4">
           <el-row>
             <el-card shadow="hover">
-              在线平均时长
+              当日平均时长
               <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
             </el-card>
           </el-row>
           <el-row>
             <el-card shadow="hover">
-              在线平均时长
+              总计平均时长
               <count-to :start-val="0" :end-val="90" :duration="3000" class="card-panel-num"/>
             </el-card>
           </el-row>
