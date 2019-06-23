@@ -9,7 +9,9 @@ require('echarts/map/js/china')
 require('echarts/map/js/world')
 require('echarts/extension/bmap/bmap')
 export default {
+  /* eslint-disable vue/require-prop-types */
   name: 'MapChart',
+  props: ['mapData'],
   mounted() {
     this.drawMap()
   },
@@ -412,6 +414,7 @@ export default {
             })
           }
         }
+        console.log(res)
         return res
       }
 
