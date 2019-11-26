@@ -115,33 +115,33 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/authorization',
-    component: Layout,
-    redirect: '/authorization/user',
-    name: 'Authorization',
-    meta: { title: '授权', icon: 'example', roles: ['admin'], permission: true },
-    children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/authorization/user/index'),
-        meta: { title: '用户管理', icon: 'tree', roles: ['admin'], permission: true }
-      },
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/authorization/role/index'),
-        meta: { title: '角色管理', icon: 'table', roles: ['admin'], permission: true }
-      },
-      {
-        path: 'permission',
-        name: 'Permission',
-        component: () => import('@/views/authorization/permission/index'),
-        meta: { title: '权限管理', icon: 'tree', roles: ['admin'], permission: true }
-      }
-    ]
-  },
+  // {
+  //   path: '/authorization',
+  //   component: Layout,
+  //   redirect: '/authorization/user',
+  //   name: 'Authorization',
+  //   meta: { title: '授权', icon: 'example', roles: ['admin'], permission: true },
+  //   children: [
+  //     {
+  //       path: 'user',
+  //       name: 'User',
+  //       component: () => import('@/views/authorization/user/index'),
+  //       meta: { title: '用户管理', icon: 'tree', roles: ['admin'], permission: true }
+  //     },
+  //     {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/authorization/role/index'),
+  //       meta: { title: '角色管理', icon: 'table', roles: ['admin'], permission: true }
+  //     },
+  //     {
+  //       path: 'permission',
+  //       name: 'Permission',
+  //       component: () => import('@/views/authorization/permission/index'),
+  //       meta: { title: '权限管理', icon: 'tree', roles: ['admin'], permission: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/resume',
     component: Layout,
