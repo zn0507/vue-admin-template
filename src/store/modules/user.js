@@ -1,13 +1,13 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { getJwtToken } from '@/api/auth'
-import { getAllUsers, UserQueryInfo } from '@/api/user'
+import { setToken, removeToken } from '@/utils/auth'
+// import { getJwtToken } from '@/api/auth'
+// import { getAllUsers, UserQueryInfo } from '@/api/user'
 
 const user = {
   state: {
     id: '',
     code: '',
-    token: getToken(),
+    token: 'admin',
     name: '',
     avatar: '',
     roles: []
@@ -52,10 +52,10 @@ const user = {
     // 登录 and 验证密码
     LoginBk({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        getJwtToken(userInfo).then(response => {
-          const data = response.data
-          setToken(data)
-          commit('SET_TOKEN', data.access_token)
+        login(userInfo).then(response => {
+          // const data = response.data
+          setToken({ refresh_token: 'admin', access_token: 'admin' })
+          commit('SET_TOKEN', 'admin')
           commit('SET_NAME', userInfo.username)
           resolve()
         }).catch(error => {
@@ -85,22 +85,27 @@ const user = {
 
     GetUserInfo({ commit }, user) {
       return new Promise((resolve, reject) => {
-        const userInfo = UserQueryInfo
-        userInfo.name = user
-        userInfo.page = 1
-        userInfo.limit = 1
-        getAllUsers(userInfo).then(response => {
-          // const data = response.data// 验证返回的roles是否是一个非空数组
-          const data = response.data.content[0]
-          commit('SET_ROLES', data.roles.map(role => role.code))
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', '')
-          commit('SET_CODE', data.code)
-          commit('SET_ID', data.id)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
+        // const userInfo = UserQueryInfo
+        // userInfo.name = user
+        // userInfo.page = 1
+        // userInfo.limit = 1
+        const roles = [{ code: 'admin' }]
+        commit('SET_ROLES', roles.map(role => role.code))
+        commit('SET_NAME', 'admin')
+        commit('SET_CODE', 'admin')
+        resolve([{ code: 'admin' }])
+        // getAllUsers(userInfo).then(response => {
+        //   // const data = response.data// 验证返回的roles是否是一个非空数组
+        //   const data = response.data.content[0]
+        //   commit('SET_ROLES', data.roles.map(role => role.code))
+        //   commit('SET_NAME', data.name)
+        //   commit('SET_AVATAR', '')
+        //   commit('SET_CODE', data.code)
+        //   commit('SET_ID', data.id)
+        //   resolve(response)
+        // }).catch(error => {
+        //   reject(error)
+        // })
       })
     },
 

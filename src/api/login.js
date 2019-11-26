@@ -13,7 +13,7 @@ export const UserQueryInfo = {
 
 export function login(username, password) {
   return request({
-    url: '/user/login',
+    url: '/login',
     method: 'post',
     data: {
       username,
