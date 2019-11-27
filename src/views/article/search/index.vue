@@ -1,9 +1,9 @@
 <template>
   <div class="article-search-container">
     <div class="article-filter-container">
-      <el-input v-model="listQuery.code" placeholder="文章编号" style="width: 200px" class="filter-item"/>
+      <!-- <el-input v-model="listQuery.code" placeholder="文章编号" style="width: 200px" class="filter-item"/> -->
       <el-input v-model="listQuery.title" placeholder="文章标题" style="width: 400px" class="filter-item"/>
-      <el-select v-model="listQuery.categoryId" placeholder="文章类别" clearable filterable style="width: 200px" class="filter-item">
+      <el-select v-model="listQuery.category" placeholder="文章类别" clearable filterable style="width: 200px" class="filter-item">
         <el-option v-for="item in category" :key="item.id" :label="item.name" :value="item.id"/>
       </el-select>
       <el-date-picker v-model="listQuery.createDate" type="date" placeholder="创建日期" style="width: 150px"/>
@@ -22,11 +22,16 @@
       row-class-name="article-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
-      <el-table-column label="编号" align="center" width="100">
-        <template slot-scope="scope">
-          <span>{{ scope.row.code }}</span>
+      <el-table-column label="标题" width="550px" align="center">
+        <template slot-scope="scope" >
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
+      <!-- <el-table-column label="编号" align="center" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column> -->
       <el-table-column label="类别" width="150px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.category.name }}</span>
@@ -39,12 +44,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.modifyDate')" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.modificationDate }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="标题" width="550px" align="center">
-        <template slot-scope="scope" >
-          <span>{{ scope.row.title }}</span>
+          <span>{{ scope.row.lastModifyDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="阅读数" width="80" align="center">
@@ -81,9 +81,9 @@
         <template slot-scope="scope">
           <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.id)">编辑正文</el-button>
           <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">修改参数</el-button>
-          <el-button v-if="scope.row.status==='draft'" size="mini" type="success" @click="handleModifyStatus(scope.row,'publish')">{{ $t('table.publish') }}
+          <el-button v-if="scope.row.status==='Draft'" size="mini" type="success" @click="handleModifyStatus(scope.row,'Publish')">{{ $t('table.publish') }}
           </el-button>
-          <el-button v-if="scope.row.status==='publish'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'draft')">{{ $t('table.draft') }}
+          <el-button v-if="scope.row.status==='Publish'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'Draft')">{{ $t('table.draft') }}
           </el-button>
         </template>
       </el-table-column>
@@ -95,9 +95,9 @@
 
     <el-dialog :title="$t('table.editArticle')" :visible.sync="isShow">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleTemp" label-position="center" label-width="70px" style="width: 800px; margin-left:50px;">
-        <el-form-item :label="$t('table.code')" prop="code" >
+        <!-- <el-form-item :label="$t('table.code')" prop="code" >
           <el-input v-model="articleTemp.code" :disabled="true" style="width: 300px"/>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.title')" prop="title">
           <el-input v-model="articleTemp.title" :disabled="true" style="width: 300px"/>
         </el-form-item>
@@ -144,15 +144,15 @@ export default {
   filters: {
     statusTypeFilter(status) {
       const statusMap = {
-        publish: 'success',
-        draft: 'danger'
+        Publish: 'success',
+        Draft: 'danger'
       }
       return statusMap[status]
     },
     statusFilters(status) {
       const statusMap = {
-        publish: '发布',
-        draft: '草稿'
+        Publish: '发布',
+        Draft: '草稿'
       }
       return statusMap[status]
     }
@@ -164,27 +164,18 @@ export default {
       isShow: false,
       isNew: false,
       statusFilter: '',
-      status: ['publish', 'draft'],
+      status: ['Publish', 'Draft'],
       total: 0,
       listLoading: false,
       listQuery: {
         page: 1,
         limit: 10,
-        code: '',
         name: '',
         status: '',
         id: '',
         title: '',
-        categoryId: '',
+        category: '',
         createDate: ''
-      },
-      pQuery: {
-        page: 0,
-        limit: 0,
-        code: '',
-        name: '',
-        status: 'publish',
-        id: ''
       },
       articleList: [],
       articleTemp: {
@@ -210,7 +201,7 @@ export default {
     }
   },
   beforeMount() {
-    getAllCategory(this.pQuery)
+    getAllCategory()
       .then(res => {
         this.category = res.data.content
       })

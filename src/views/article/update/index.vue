@@ -17,16 +17,6 @@
             <el-input-number v-model="form.likes" :min="0" controls-position="right" style="width: 120px"/>
           </el-form-item>
         </el-col>
-        <!--<el-col :span="3">-->
-        <!--<el-form-item :label="$t('table.comments')" prop="comments" label-width="60px" >-->
-        <!--<el-input-number v-model="form.comments" :min="0" controls-position="right" style="width: 120px"/>-->
-        <!--</el-form-item>-->
-        <!--</el-col>-->
-        <el-col :span="3">
-          <el-form-item :label="$t('table.summaryRank')" label-width="70px" >
-            <el-input-number v-model="form.summary.rank" :min="0" controls-position="right" style="width: 120px"/>
-          </el-form-item>
-        </el-col>
         <el-col :span="3">
           <el-form-item :label="$t('table.rank')" prop="rank" label-width="60px" >
             <el-input-number v-model="form.rank" :min="0" controls-position="right" style="width: 120px"/>
@@ -34,13 +24,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="10">
-        <el-col :span="2">
-          <el-switch
-            v-model="isShowContent"
-            active-text="摘要"
-            inactive-text="正文"
-            style="top: 10px;"/>
-        </el-col>
         <el-col :span="2">
           <el-form-item label-width="0">
             <el-select v-model="form.category" :placeholder="$t('table.category')" filterable clearable value-key="id">
@@ -79,8 +62,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="18">
-          <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary.content" :z-index="20" style="height: auto"/>
+          <markdown-editor id="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
@@ -164,7 +146,6 @@ export default {
         limit: 10,
         code: '',
         name: '',
-        status: 'publish',
         id: '',
         articleId: ''
       },
@@ -180,7 +161,7 @@ export default {
         comments: 0,
         rank: 0,
         createDate: '',
-        modificationDate: '',
+        lastModifyDate: '',
         category: {},
         createUser: '',
         lastModifyUser: store.getters.code
@@ -205,7 +186,7 @@ export default {
         limit: 0,
         code: '',
         name: '',
-        status: 'publish',
+        status: 'Publish',
         id: ''
       },
       type: [{
@@ -228,7 +209,6 @@ export default {
       })
     this.query.id = this.$route.params.id
     this.getArticle(this.query)
-    this.isShowLink = this.form.type === 'original'
   },
   methods: {
     getPictures(query) {
@@ -248,6 +228,7 @@ export default {
           this.form = res.data.content[0]
           this.form.category = this.form.category.id
           this.listLoading = false
+          this.isShowLink = this.form.type !== 'original'
         })
     },
     saveArticle(data) {
@@ -301,7 +282,7 @@ export default {
       const article = Object.assign({}, this.form)
       article.menu = ''
       article.category = { 'id': this.form.category }
-      article.status = 'publish'
+      article.status = 'Publish'
       this.saveArticle(article)
     },
     markdown2Html() {

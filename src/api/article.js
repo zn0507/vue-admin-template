@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 // import { delNullQueryInfo } from '@/utils/index'
-export const ArticlePrefix = '/api/artSer'
+export const ArticlePrefix = ''
 export const PicturePrefix = 'http://localhost:81/article/'
 
 export const ArtQueryInfo = {
@@ -9,15 +9,13 @@ export const ArtQueryInfo = {
   id: '',
   code: '',
   name: '',
-  status: 'publish',
-  orderDesc: [],
-  orderAsc: []
+  status: 'Publish'
 }
 
 export function getAllArticle(query) {
   // delNullQueryInfo(query)
   return request({
-    url: ArticlePrefix + '/article',
+    url: ArticlePrefix + '/article/list',
     method: 'get',
     params: query
   })
@@ -33,18 +31,17 @@ export function getArticleById(id) {
 
 export function updateArticle(data) {
   return request({
-    url: ArticlePrefix + '/article',
+    url: ArticlePrefix + '/article/save',
     method: 'post',
     data
   })
 }
 
-export function getAllCategory(query) {
+export function getAllCategory() {
   // delNullQueryInfo(query)
   return request({
-    url: ArticlePrefix + '/articleCategory',
-    method: 'get',
-    params: query
+    url: ArticlePrefix + '/category/list',
+    method: 'get'
   })
 }
 
