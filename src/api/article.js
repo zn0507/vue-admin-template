@@ -55,7 +55,7 @@ export function getCategoryById(id) {
 
 export function updateCategory(data) {
   return request({
-    url: ArticlePrefix + '/articleCategory',
+    url: ArticlePrefix + '/category/save',
     method: 'post',
     data
   })
