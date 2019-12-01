@@ -2,17 +2,17 @@
   <div class="category-container">
     <div class="category-filter-container">
       <el-row :gutter="20">
-        <el-col :span="3">
+        <!-- <el-col :span="3">
           <el-input :placeholder="$t('table.code')" v-model="listQuery.code" class="filter-item"/>
-        </el-col>
+        </el-col> -->
         <el-col :span="3">
           <el-input :placeholder="$t('table.name')" v-model="listQuery.name" class="filter-item"/>
         </el-col>
-        <el-col :span="3">
+        <!-- <el-col :span="3">
           <el-select v-model="listQuery.status" :placeholder="$t('table.status')" clearable class="filter-item">
             <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
           </el-select>
-        </el-col>
+        </el-col> -->
         <el-col :span="2">
           <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch()">搜索</el-button>
         </el-col>
@@ -31,11 +31,11 @@
       row-class-name="permission-search-table-row"
       cell-style="padding:2px;"
       style="margin: 10px 0">
-      <el-table-column :label="$t('table.code')" align="center" width="150">
+      <!-- <el-table-column :label="$t('table.code')" align="center" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column :label="$t('table.name')" width="150" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -66,11 +66,11 @@
           <span>{{ scope.row.lastModifyUser }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.status')" width="100px" align="center">
+      <!-- <el-table-column :label="$t('table.status')" width="100px" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusTypeFilter">{{ scope.row.status | statusFilters }}</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
@@ -97,17 +97,17 @@
 
     <el-dialog :title="$t('table.edit')" :visible.sync="isShow" width="600px">
       <el-form ref="dataForm" :rules="rules" :inline="true" :model="articleCategoryTemp" label-position="center" label-width="70px" style="width: 600px">
-        <el-form-item :label="$t('table.code')" prop="code">
+        <!-- <el-form-item :label="$t('table.code')" prop="code">
           <el-input v-model="articleCategoryTemp.code" :disabled="true" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="articleCategoryTemp.name" />
         </el-form-item>
-        <el-form-item :label="$t('table.status')">
+        <!-- <el-form-item :label="$t('table.status')">
           <el-select v-model="articleCategoryTemp.status" class="filter-item" style="width: 185px" clearable>
             <el-option v-for="item in status" :key="item" :label="item | statusFilters" :value="item"/>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('table.rank')" prop="rank">
           <el-input-number v-model="articleCategoryTemp.rank" :min="0" controls-position="right"/>
         </el-form-item>
