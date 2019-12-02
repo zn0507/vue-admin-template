@@ -9,7 +9,8 @@ export const ArtQueryInfo = {
   id: '',
   code: '',
   name: '',
-  status: 'Publish'
+  status: 'Publish',
+  showPage: false
 }
 
 export function getAllArticle(query) {
