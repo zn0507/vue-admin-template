@@ -51,19 +51,21 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'ArticleSearch',
         component: () => import('@/views/article/search/index'),
-        meta: { title: '搜索文章', icon: 'tree', permission: true }
+        meta: { title: '文章', icon: 'tree', permission: true }
       },
       {
         path: 'new',
         name: 'ArticleNew',
         component: () => import('@/views/article/new/index'),
-        meta: { title: '新建文章', icon: 'table', roles: ['admin'], permission: true }
+        meta: { title: '新建文章', icon: 'table', roles: ['admin'], permission: true },
+        hidden: true
       },
       {
         path: 'update/:id',
         name: 'ArticleUpdate',
         component: () => import('@/views/article/update/index'),
-        meta: { title: '修改文章', icon: 'tree', roles: ['admin'], permission: true }
+        meta: { title: '修改文章', icon: 'tree', roles: ['admin'], permission: true },
+        hidden: true
       }
     ]
   },
@@ -78,7 +80,7 @@ export const asyncRouterMap = [
         path: 'search',
         name: 'CategorySearch',
         component: () => import('@/views/category/search/index'),
-        meta: { title: '搜索类别', icon: 'tree', roles: ['admin'], permission: true }
+        meta: { title: '类别', icon: 'tree', roles: ['admin'], permission: true }
       }
       // {
       //   path: 'new',
