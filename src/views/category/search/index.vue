@@ -157,10 +157,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        code: '',
         name: '',
-        status: '',
-        id: ''
+        showPage: false
       },
       articleCategoryList: [],
       articleCategoryTemp: {

@@ -13,6 +13,14 @@ export const ArtQueryInfo = {
   showPage: false
 }
 
+export const CategoryQueryInfo = {
+  page: 0,
+  limit: 0,
+  id: '',
+  name: '',
+  showPage: false
+}
+
 export function getAllArticle(query) {
   // delNullQueryInfo(query)
   return request({
@@ -38,11 +46,12 @@ export function updateArticle(data) {
   })
 }
 
-export function getAllCategory() {
+export function getAllCategory(query) {
   // delNullQueryInfo(query)
   return request({
     url: ArticlePrefix + '/category/list',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

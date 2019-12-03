@@ -202,7 +202,14 @@ export default {
     }
   },
   beforeMount() {
-    getAllCategory()
+    const query = {
+        page: 0,
+        limit: 0,
+        name: '',
+        id: '',
+        showPage: true
+    }
+    getAllCategory(query)
       .then(res => {
         this.category = res.data.content
       })

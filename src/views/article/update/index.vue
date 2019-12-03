@@ -183,10 +183,9 @@ export default {
       pQuery: {
         page: 0,
         limit: 0,
-        code: '',
         name: '',
-        status: 'Publish',
-        id: ''
+        id: '',
+        showPage: true
       },
       type: [{
         code: 'original',
