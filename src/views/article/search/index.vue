@@ -11,6 +11,7 @@
         <el-option v-for="item in status" :key="item" :label="item" :value="item"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <el-button v-waves class="filter-item" type="success" @click="router2new">新建</el-button>
     </div>
 
     <el-table
@@ -79,7 +80,7 @@
       <!--</el-table-column>-->
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.id)">编辑正文</el-button>
+          <el-button v-waves type="primary" size="mini" @click="handleEditContent(scope.row.id)">编辑</el-button>
           <el-button v-waves type="primary" size="mini" @click="handleUpdate(scope.row)">修改参数</el-button>
           <el-button v-if="scope.row.status==='Draft'" size="mini" type="success" @click="handleModifyStatus(scope.row,'Publish')">{{ $t('table.publish') }}
           </el-button>
@@ -234,6 +235,9 @@ export default {
     handleSearch() {
       this.listQuery.page = 1
       this.getArticles(this.listQuery)
+    },
+    router2new() {
+      this.$router.push('/article/new')
     },
     handleCreate() {
       this.resetTemp()

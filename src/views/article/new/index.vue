@@ -5,18 +5,18 @@
         <el-input v-model="form.title" :placeholder="$t('table.title')"/>
       </el-form-item>
       <el-row :gutter="5">
-        <el-col :span="2">
+        <!-- <el-col :span="2">
           <el-switch
             v-model="isShowContent"
             active-text="摘要"
             inactive-text="正文"
             style="top: 10px;"/>
-        </el-col>
+        </el-col> -->
         <el-col :span="3">
           <el-form-item>
             <el-select v-model="form.status" :placeholder="$t('table.status')" clearable>
-              <el-option label="发布" value="publish"/>
-              <el-option label="草稿" value="draft"/>
+              <el-option label="发布" value="Publish"/>
+              <el-option label="草稿" value="Draft"/>
             </el-select>
           </el-form-item>
         </el-col>
@@ -53,7 +53,6 @@
       <el-row :gutter="20">
         <el-col :span="18">
           <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-          <markdown-editor v-show="isShowContent" id="summaryEditor" ref="summaryEditor" v-model="form.summary.content" :z-index="20" style="height: auto"/>
         </el-col>
         <el-col :span="6">
           <el-form-item style="margin-bottom: 0" label-width="0">
@@ -129,17 +128,6 @@ export default {
       form: {
         title: '',
         content: '',
-        summary: {
-          'code': '',
-          'name': '',
-          'createDate': '',
-          'modificationDate': '',
-          'status': 'publish',
-          'createUser': store.getters.code,
-          'lastModifyUser': store.getters.code,
-          'content': '',
-          'rank': 0
-        },
         status: '',
         type: '',
         link: '',
@@ -159,7 +147,7 @@ export default {
         limit: 0,
         code: '',
         name: '',
-        status: 'publish',
+        status: 'Publish',
         id: ''
       },
       category: [],
@@ -200,6 +188,7 @@ export default {
               message: '操作成功',
               type: 'success'
             })
+            this.$router.push('/article/update/' + res.data.content.id)
           }
         })
     },
@@ -218,15 +207,6 @@ export default {
     },
     onSubmit() {
       const article = Object.assign({}, this.form)
-      article.modificationDate = new Date()
-      article.createDate = new Date()
-      article.createUser = '1'
-      article.lastModifyUser = '1'
-      article.summary.modificationDate = new Date()
-      article.summary.createDate = new Date()
-      article.summary.createUser = '1'
-      article.summary.lastModifyUser = '1'
-      article.menu = '"前言""搭建""编写""运营""结束"'
       this.saveArticle(article)
     },
     onPublish() {

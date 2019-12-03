@@ -152,7 +152,6 @@ export default {
       form: {
         title: '',
         content: '',
-        summary: {},
         status: '',
         type: '',
         link: '',
