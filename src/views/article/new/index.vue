@@ -40,55 +40,10 @@
             <el-input v-model="form.link" :placeholder="$t('table.link')"/>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <el-popover
-            placement="bottom"
-            width="250"
-            trigger="click"
-            content="<div class=&quot;scroll_title&quot;></div> <img src=&quot;&quot; height=&quot;300&quot; width=&quot;700&quot; >">
-            <el-button slot="reference">文章目录css</el-button>
-          </el-popover>
-        </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="18">
+        <el-col :span="24">
           <markdown-editor v-show="!isShowContent" id="contentEditor" ref="contentEditor" v-model="form.content" :z-index="20" style="height: auto"/>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item style="margin-bottom: 0" label-width="0">
-            <el-col :span="24" style="height: 350px; " class="upload-picture">
-              <el-scrollbar style="height: 100%;">
-                <el-upload
-                  ref="upload"
-                  :file-list="pictureList"
-                  :data="pictureProps"
-                  :before-upload="beforeUpload"
-                  :on-preview="handlePicturePreview"
-                  :on-remove="handlePictureRemove"
-                  :on-success="loadSuccess"
-                  :on-error="loadError"
-                  :auto-upload="false"
-                  :headers="headers"
-                  action="/api/artSer/picture/upload"
-                  list-type="picture"
-                >
-                  <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
-                  <el-button slot="trigger" style="width: 200px" size="small" plain round>选取图片</el-button>
-                  <el-button style="width: 200px" size="small" plain round @click="submitUpload">上传到服务器</el-button>
-                </el-upload>
-              </el-scrollbar>
-            </el-col>
-          </el-form-item>
-          <el-row style="margin: 10px 0;">
-            <el-button style="width: 200px" size="small" round plain @click="getAllPicture">获取文章所有图片</el-button>
-          </el-row>
-          <el-row>
-            <el-col :span="24" style="height: 250px;" class="upload-picture">
-              <el-scrollbar style="height: 100%;">
-                <img v-for="pic in pictures" :key="pic.id" :src="pic.link" width="120" alt="" @click="showPic(pic)">
-              </el-scrollbar>
-            </el-col>
-          </el-row>
         </el-col>
       </el-row>
       <el-form-item>
@@ -96,11 +51,6 @@
         <el-button type="primary" @click="onPublish">发布</el-button>
       </el-form-item>
     </el-form>
-
-    <el-dialog :visible.sync="dialogPictureVisible">
-      <el-row>{{ dialogPictureName }}</el-row>
-      <img :src="dialogPictureImageUrl" width="100%" alt="">
-    </el-dialog>
   </div>
 </template>
 

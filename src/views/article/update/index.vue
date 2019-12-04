@@ -70,6 +70,7 @@
               <el-scrollbar style="height: 100%;">
                 <el-upload
                   ref="upload"
+                  multiple
                   :file-list="pictureList"
                   :data="pictureProps"
                   :before-upload="beforeUpload"
@@ -79,7 +80,7 @@
                   :on-error="loadError"
                   :auto-upload="false"
                   :headers="headers"
-                  action="/api/artSer/picture/upload"
+                  action="/article/uploadPicture"
                   list-type="picture"
                 >
                   <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
@@ -121,6 +122,7 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import { getAllArticle, getAllCategory, updateArticle, PicturePrefix, getAllPicture } from '@/api/article'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import moment from 'moment';
 
 export default {
   name: 'ArticleUpdate',
@@ -138,17 +140,17 @@ export default {
       isShowContent: false,
       isShowLink: false,
       pictureProps: {
-        articleId: '',
-        user: store.getters.code
-      },
-      picQuery: {
-        page: 1,
-        limit: 10,
-        code: '',
-        name: '',
-        id: '',
         articleId: ''
+        // user: store.getters.code
       },
+      // picQuery: {
+      //   page: 1,
+      //   limit: 10,
+      //   code: '',
+      //   name: '',
+      //   id: '',
+      //   articleId: ''
+      // },
       form: {
         title: '',
         content: '',
@@ -248,9 +250,11 @@ export default {
       console.log(file, fileList)
     },
     beforeUpload(file) {
-      // console.log(file)
       // const isLt2M = file.size / 1024 / 1024 < 2;
       // console.log('size:' + file.size / 1024 + 'KB')
+      setTimeout(() => {
+        file.name = `${moment().format('YYYYMMDDHHMMSSMMM')}.jpg`;
+      }, 100)
       this.pictureProps.articleId = this.form.id
     },
     loadSuccess(res) {
@@ -294,9 +298,9 @@ export default {
       this.isShowLink = val !== 'original'
     },
     getAllPicture() {
-      this.pictures = []
-      this.picQuery.articleId = this.form.id
-      this.getPictures(this.picQuery)
+      // this.pictures = []
+      // this.picQuery.articleId = this.form.id
+      // this.getPictures(this.picQuery)
     },
     showPic(val) {
       this.dialogPictureVisible = true
