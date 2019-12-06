@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 // import { delNullQueryInfo } from '@/utils/index'
 export const ArticlePrefix = ''
-export const PicturePrefix = 'http://localhost:81/article/'
+export const PicturePrefix = 'http://localhost:81/'
 
 export const ArtQueryInfo = {
   page: 0,
