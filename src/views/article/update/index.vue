@@ -44,7 +44,7 @@
             placement="bottom"
             width="250"
             trigger="click"
-            content="<div class=&quot;scroll_title&quot;></div> <img src=&quot;&quot; height=&quot;300&quot; width=&quot;700&quot; >">
+            content="<div class=&quot;scroll_title&quot;></div> <div style=&quot;text-align: center&quot;> <img src=&quot;&quot; height=&quot;300&quot; width=&quot;700&quot; > </div>">
             <el-button slot="reference">文章目录css</el-button>
           </el-popover>
         </el-col>
@@ -70,7 +70,6 @@
               <el-scrollbar style="height: 100%;">
                 <el-upload
                   ref="upload"
-                  multiple
                   :file-list="pictureList"
                   :data="pictureProps"
                   :before-upload="beforeUpload"
@@ -82,6 +81,7 @@
                   :headers="headers"
                   action="/article/uploadPicture"
                   list-type="picture"
+                  multiple
                 >
                   <!--<el-button style="width: 200px" size="small" round>{{ $t('table.upload') }}</el-button>-->
                   <el-button slot="trigger" style="width: 200px" size="small" plain round>选取图片</el-button>
@@ -90,16 +90,15 @@
               </el-scrollbar>
             </el-col>
           </el-form-item>
-          <el-row style="margin: 10px 0;">
-            <el-button style="width: 200px" size="small" round plain @click="getAllPicture">获取文章所有图片</el-button>
-          </el-row>
-          <el-row>
-            <el-col :span="24" style="height: 250px;" class="upload-picture">
-              <el-scrollbar style="height: 100%;">
-                <img v-for="pic in pictures" :key="pic.id" :src="pic.link" width="120" alt="" @click="showPic(pic)">
-              </el-scrollbar>
-            </el-col>
-          </el-row>
+          <div class="article-show">
+            <el-row>
+              <el-col :span="24" style="height: 250px;" class="upload-picture">
+                <el-scrollbar style="height: 100%;">
+                  <img v-for="pic in pictures" :key="pic.id" :src="pic.link" style="margin-left: 5px" width="120" alt="" @click="showPic(pic)">
+                </el-scrollbar>
+              </el-col>
+            </el-row>
+          </div>
         </el-col>
       </el-row>
       <el-form-item label-width="0">
@@ -119,10 +118,9 @@
 import '@/styles/article.css'
 import waves from '@/directive/waves'
 import MarkdownEditor from '@/components/MarkdownEditor'
-import { getAllArticle, getAllCategory, updateArticle, PicturePrefix, getAllPicture } from '@/api/article'
+import { getAllArticle, getAllCategory, updateArticle, PicturePrefix } from '@/api/article'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import moment from 'moment';
 
 export default {
   name: 'ArticleUpdate',
@@ -211,16 +209,6 @@ export default {
     this.getArticle(this.query)
   },
   methods: {
-    getPictures(query) {
-      getAllPicture(query)
-        .then(res => {
-          res.data.content.forEach(pic => {
-            const picTemp = Object.assign({}, pic)
-            picTemp.link = PicturePrefix + picTemp.link
-            this.pictures.push(picTemp)
-          })
-        })
-    },
     getArticle(query) {
       this.listLoading = true
       getAllArticle(query)
@@ -229,6 +217,7 @@ export default {
           this.form.category = this.form.category.id
           this.listLoading = false
           this.isShowLink = this.form.type !== 'original'
+          this.getAllPicture()
         })
     },
     saveArticle(data) {
@@ -252,9 +241,6 @@ export default {
     beforeUpload(file) {
       // const isLt2M = file.size / 1024 / 1024 < 2;
       // console.log('size:' + file.size / 1024 + 'KB')
-      setTimeout(() => {
-        file.name = `${moment().format('YYYYMMDDHHMMSSMMM')}.jpg`;
-      }, 100)
       this.pictureProps.articleId = this.form.id
     },
     loadSuccess(res) {
@@ -298,9 +284,17 @@ export default {
       this.isShowLink = val !== 'original'
     },
     getAllPicture() {
-      // this.pictures = []
-      // this.picQuery.articleId = this.form.id
-      // this.getPictures(this.picQuery)
+      this.pictures = []
+      if (this.form.picture != null) {
+        let i = 0
+        this.form.picture.split(';').forEach(pic => {
+          const picTemp = {}
+          picTemp.id = i
+          picTemp.link = PicturePrefix + this.form.id + '/' + pic
+          this.pictures.push(picTemp)
+          i = i + 1
+        })
+      }
     },
     showPic(val) {
       this.dialogPictureVisible = true
@@ -320,5 +314,9 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.article-show {
+  border-top: solid 2px rgb(105, 101, 97);
+  padding-top: 10px
 }
 </style>
