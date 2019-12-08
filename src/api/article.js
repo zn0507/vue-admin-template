@@ -1,7 +1,9 @@
 import request from '@/utils/request'
+import { PREFIX } from '@/constant/constant'
 // import { delNullQueryInfo } from '@/utils/index'
-export const ArticlePrefix = ''
-export const PicturePrefix = 'http://localhost:81/blog/article/'
+export const ArticlePrefix = PREFIX
+// export const PicturePrefix = 'http://localhost:81/blog/article/'
+export const PicturePrefix = 'http://localhost:80/blogpics/article/'
 
 export const ArtQueryInfo = {
   page: 0,
